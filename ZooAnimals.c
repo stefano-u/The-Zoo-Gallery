@@ -22,7 +22,7 @@ void deleteList(animal_t**);
 
 int main() {
     // Opens text file for reading/writing
-    FILE *fp = fopen("dataNEW.txt", "r+");
+    FILE *fp = fopen("data.txt", "r+");
     if (fp == NULL) {
         printf("Error reading file.\n");
         exit(1);
