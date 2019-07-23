@@ -16,7 +16,7 @@ typedef struct animal {
 } animal_t;
 
 animal_t* createList(FILE*);
-animal_t* createNode(FILE*);
+animal_t* createNodeFromFile(FILE*);
 void displayList(animal_t*);
 void deleteList(animal_t**);
 
@@ -48,7 +48,7 @@ animal_t* createList(FILE *fp) {
     animal_t *node = NULL, *current = NULL, *head = NULL;
 
     // Creates nodes and puts it on the linked list
-    while ((node = createNode(fp)) != NULL) {
+    while ((node = createNodeFromFile(fp)) != NULL) {
         if (head == NULL) {
             head = node;
         } else {
@@ -61,7 +61,7 @@ animal_t* createList(FILE *fp) {
 }
 
 // Create nodes based on input from file
-animal_t* createNode(FILE* fp) {
+animal_t* createNodeFromFile(FILE* fp) {
     
     char temp[MAX_LEN] = {0};
     
