@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <string.h>
 #include "zooAnimals1.h"
 
@@ -94,31 +95,18 @@ animal_t* createList(FILE *fp) {
     return head;
 }
 
-// Display contents of linked list
-void displayList(animal_t* head) {
-    if (head == NULL) {
-        printf("Linked List is empty!\n");
-    } else {
-        animal_t* current = head;
-        while (current != NULL) {
-            printf("%d - %s - %c - %d - %s\n", current->animalID, current->name, current->sex, current->quantity, current->location);
-            current = current->next;
-        }
-    }
-}
-
 // Displays 3 fields to the screen
 void displayListBrief(animal_t* head) {
     if (head == NULL) {
         printf("Linked List is empty!\n");
     } else {
         animal_t* current = head;
-        puts("\n");
+        puts("\n========== SHOW ALL RECORDS ==========");
         while (current != NULL) {
             printf("%d) %s (%c)\n", current->animalID, current->name, current->sex);
             current = current->next;
         }
-        puts("\n");
+        viewRecord(head);
     }
 }
 
@@ -146,5 +134,89 @@ void printToFile(FILE* fp, animal_t* head) {\
             current = current->next;
         }
     }
+}
+
+// Add a new record 
+void addRecord(animal_t** head) {
+    puts("\n========== ADD NEW RECORD ==========");
+    animal_t* newNode = (animal_t*) malloc(sizeof (animal_t));
+    if (newNode == NULL) {
+        printf("Cannot allocate memory for this animal!\n");
+        return;
+    }
+    
+    int animalID, quantity;
+    char sex;
+    char temp[MAX_LEN] = {0};
+    
+    do {
+        printf("Enter Animal ID for new animal record: ");
+        scanf("%d", &animalId);
+
+        bool isValid = true;
+        // check if record is valid
+        animal_t* current = *head;
+        while (current != NULL) {
+            if (current->animalID == animalId) {
+                puts("This animal ID is already taken. Please try again.");
+                isValid = false;
+                break;
+            }
+            current = current->next;
+        }
+    } while (!isValid);
+
+    
+    printf("Enter the name of the animal: ");
+    fgets(temp, MAX_LEN, stdin);
+    newNode->name = (char*) calloc(strlen(temp)+1, sizeof(char));
+    if (newNode->name == NULL) {
+        printf("Cannot allocate memory for this animal's name!\n");
+        return;
+    }
+    
+    strcpy(newNode->name, temp);
+    // if EXACTLY same NAME, SEX, and LOCATION, just increment that specific one
+    
+    
+    animal_t* current = *head;
+}
+
+// Displays specific records
+void viewRecord(animal_t* head) {
+    puts("\n========== VIEW SPECIFIC RECORD ==========");
+    printf("Enter the Animal ID to view details of that record (-1 to exit): ");
+    int recordId;
+    FLUSH;
+    scanf("%d", &recordId);   
+
+    while (recordId != -1) {
+        animal_t* current = head;
+
+        bool recordExists = false;
+        while (current != NULL) {
+            if (current->animalID == recordId) {
+                printf("\n---------------------------------------------\n");
+                printf("Animal ID:\t%d\n", current->animalID);
+                printf("Name:\t\t%s\n", current->name);
+                printf("Sex:\t\t%c\n", current->sex);
+                printf("Quantity:\t%d\n", current->quantity);
+                printf("Location:\t%s", current->location);
+                printf("\n---------------------------------------------\n\n");
+                
+                recordExists = true;
+                break;
+            }
+            current = current->next;
+        }
+        if (!recordExists) {
+            printf("This record does not exist.\n\n");
+        }
+        
+        printf("Enter the Animal ID to view details of that record (-1 to exit): ");
+        FLUSH;
+        scanf("%d", &recordId);
+    }
+    puts("");
 }
 
