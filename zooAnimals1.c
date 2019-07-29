@@ -1,100 +1,15 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include "zooAnimals1.h"
+
 #define MAX_LEN 100
 #define FLUSH stdin=freopen(NULL,"r",stdin)
 #define REMOVERN(str) str[strcspn(str,"\r\n")]=0
 #define REMOVEN(str) str[strcspn(str,"\n")]=0
 
-typedef struct animal {
-    int animalID;
-    char* name;
-    char sex;
-    int quantity;
-    char* location;
-    struct animal* next;
-} animal_t;
-
-animal_t* createList(FILE*);
-animal_t* createNodeFromFile(FILE*);
-void displayList(animal_t*);
-void displayListBrief(animal_t*);
-void deleteList(animal_t**);
-void printToFile(FILE*, animal_t*);
-
-int main() {
-    // Opens text file for reading/writing
-    FILE *fp = fopen("dataNEW.txt", "r+");
-    if (fp == NULL) {
-        printf("Error reading file.\n");
-        exit(1);
-    }
-
-    // Create linked list from file
-    animal_t* list = createList(fp);
-
-
-    puts("=== Welcome to the Zoo Gallery ===\n");
-    int choice;
-
-    do {
-        puts("Please select from one of the following options:");
-        puts("'1' to show all records");
-        puts("'2' to show details of a specific record");
-        puts("'3' to add a record");
-        puts("'5 to edit a record");
-        puts("'6' to delete a record");
-        puts("'7' to search for a record");
-        puts("'0' to quit");
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 0:
-                break;
-            case 1:
-                displayListBrief(list);
-                break;
-            case 2:
-                break;
-
-        }
-
-    } while (choice != 0);
-    // Display contents of the list
-    //    displayList(list);
-
-    // Close file pointer
-    fclose(fp);
-
-    // Print to file
-    printToFile(fp, list);
-
-    // Free linked list & contents of nodes
-    deleteList(&list);
-
-    return 0;
-}
-
-// Creates a linked list based on data on file
-
-animal_t* createList(FILE *fp) {
-    animal_t *node = NULL, *current = NULL, *head = NULL;
-
-    // Creates nodes and puts it on the linked list
-    while ((node = createNodeFromFile(fp)) != NULL) {
-        if (head == NULL) {
-            head = node;
-        } else {
-            current->next = node;
-        }
-        current = node;
-    }
-
-    return head;
-}
 
 // Create nodes based on input from file
-
 animal_t* createNodeFromFile(FILE* fp) {
 
     char temp[MAX_LEN] = {0};
@@ -162,8 +77,24 @@ animal_t* createNodeFromFile(FILE* fp) {
     }
 }
 
-// Display contents of linked list
+// Creates a linked list based on data on file
+animal_t* createList(FILE *fp) {
+    animal_t *node = NULL, *current = NULL, *head = NULL;
 
+    // Creates nodes and puts it on the linked list
+    while ((node = createNodeFromFile(fp)) != NULL) {
+        if (head == NULL) {
+            head = node;
+        } else {
+            current->next = node;
+        }
+        current = node;
+    }
+
+    return head;
+}
+
+// Display contents of linked list
 void displayList(animal_t* head) {
     if (head == NULL) {
         printf("Linked List is empty!\n");
@@ -176,6 +107,7 @@ void displayList(animal_t* head) {
     }
 }
 
+// Displays 3 fields to the screen
 void displayListBrief(animal_t* head) {
     if (head == NULL) {
         printf("Linked List is empty!\n");
@@ -191,7 +123,6 @@ void displayListBrief(animal_t* head) {
 }
 
 // Free linked list & contents of nodes
-
 void deleteList(animal_t** head) {
     animal_t* current = *head;
     animal_t* nextLocation = NULL;
@@ -204,6 +135,7 @@ void deleteList(animal_t** head) {
     }
 }
 
+// Prints all contents of the linked list to the file
 void printToFile(FILE* fp, animal_t* head) {\
     if (head == NULL) {
         printf("Linked List is empty! Cannot print to file.\n");
@@ -215,3 +147,4 @@ void printToFile(FILE* fp, animal_t* head) {\
         }
     }
 }
+
