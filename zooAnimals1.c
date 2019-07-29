@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 #include "zooAnimals1.h"
 
 #define MAX_LEN 100
@@ -139,22 +140,25 @@ void printToFile(FILE* fp, animal_t* head) {\
 // Add a new record 
 void addRecord(animal_t** head) {
     puts("\n========== ADD NEW RECORD ==========");
+    
+    // Allocate memory for new node
     animal_t* newNode = (animal_t*) malloc(sizeof (animal_t));
     if (newNode == NULL) {
         printf("Cannot allocate memory for this animal!\n");
         return;
     }
     
-    int animalID, quantity;
+    int animalId, quantity;
     char sex;
     char temp[MAX_LEN] = {0};
     
+    // Ask user for animal ID
+    bool isValid = true;
     do {
         printf("Enter Animal ID for new animal record: ");
+        FLUSH;
         scanf("%d", &animalId);
-
-        bool isValid = true;
-        // check if record is valid
+        
         animal_t* current = *head;
         while (current != NULL) {
             if (current->animalID == animalId) {
@@ -167,19 +171,98 @@ void addRecord(animal_t** head) {
     } while (!isValid);
 
     
+    // Ask user for animal name
     printf("Enter the name of the animal: ");
     fgets(temp, MAX_LEN, stdin);
+    FLUSH;
+    REMOVEN(temp);
     newNode->name = (char*) calloc(strlen(temp)+1, sizeof(char));
     if (newNode->name == NULL) {
         printf("Cannot allocate memory for this animal's name!\n");
         return;
     }
-    
     strcpy(newNode->name, temp);
-    // if EXACTLY same NAME, SEX, and LOCATION, just increment that specific one
     
+    // Ask user for animal's sex
+    do {
+        FLUSH;
+        printf("Enter the sex of the animal (M/F): ");
+        scanf("%c", &sex);
+        if (sex != 'M' || sex != 'F') {
+            printf("Please state 'M' or 'F'\n");
+        }
+    } while (sex != 'M' || sex != 'F');
     
-    animal_t* current = *head;
+    // Ask user for animal location
+    printf("Enter the location of the animal: ");
+    fgets(temp, MAX_LEN, stdin);
+    FLUSH;
+    REMOVEN(temp);
+    newNode->location = (char*) calloc(strlen(temp)+1, sizeof(char));
+    if (newNode->location == NULL) {
+        printf("Cannot allocate memory for this animal's location!\n");
+        return;
+    }
+    strcpy(newNode->location, temp);
+
+    // Prints current information of new animal
+    printf("Here are the information for your animal:\n ");
+    printf("\n---------------------------------------------\n");
+    printf("Animal ID:\t%d\n", newNode->animalID);
+    printf("Name:\t\t%s\n", newNode->name);
+    printf("Sex:\t\t%c\n", newNode->sex);
+    printf("Quantity:\t%d\n", newNode->quantity);
+    printf("Location:\t%s", newNode->location);
+    printf("\n---------------------------------------------\n\n");
+
+
+    // Confirms with the user if they want to inser tthe new record
+    char choice;
+    do {
+        printf("CONFIRMATION: Would you like to add this new record (Y/N)? ");
+        scanf("%c", &choice);
+        choice = toupper(choice);
+
+        if (choice == 'Y') {
+            // If there's a record with the exact same name, sex, and location, then just INCREMENT the quantity
+            animal_t* current = *head;
+            bool recordExists = false;
+            while (current != NULL) {
+                if (current->sex == newNode->sex && strcmp(current->name, newNode->name) == 0 && strcmp(current->location, newNode->name)) {
+                    printf("This exact record already exists. Quantity is incremented.");
+                    recordExists = true;
+                    break;
+                }
+                current = current->next;
+            }
+
+            // If animal doesn't exist in the list, then add it to the list
+            if (!recordExists) {
+                insertToList(head, newNode);
+                printf("This record has been added to the list");
+            }
+        } else if (choice == 'N') {
+            printf("The record will NOT be inserted!\n");
+            free(newNode->name);
+            free(newNode->location);
+            free(newNode);
+        }
+    } while (choice != 'Y' || choice != 'N');
+}
+
+void insertToList(animal_t** head, animal_t* node) {
+    // insert as first:
+    if (*head == NULL || node->animalID >= (*head)->animalID) {
+        node->next = *head;
+        *head = node;
+    } else {
+        animal_t* current = *head;
+        while (current->next != NULL && (node->animalID < current->next->animalID)) {
+            current = current->next;
+        }
+        node->next = current->next;
+        current->next = node;
+    }
 }
 
 // Displays specific records

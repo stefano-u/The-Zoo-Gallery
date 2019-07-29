@@ -43,6 +43,7 @@ int main() {
                 displayListBrief(list);
                 break;
             case 2:
+                addRecord(&head);
                 break;
             case 3:
                 break;
