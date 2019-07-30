@@ -20,7 +20,7 @@ void deleteNode(animal_t**, int);
 void displayListBrief(animal_t*);
 bool checkRecordExist(animal_t*, int, bool);
 void addRecord(animal_t**);
-void editRecord(animal_t*);
+void editRecord(animal_t**);
 void deleteRecord(animal_t**);
 void searchById(animal_t*);
 

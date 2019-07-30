@@ -7,8 +7,7 @@
 
 /*
  * To-Do List:
- * 1) EDIT Record
- * 2) SEARCH for a record 
+ * 1) SEARCH for a record 
  *      - Partial searching?
  *      - Range searching?
  * 
@@ -31,7 +30,7 @@ int main() {
     int choice;
 
     do {
-        puts("Please select from one of the following options:");
+        puts("\n----------------------- MAIN MENU ----------------------");
         puts(" 1) SHOW ALL RECORDS / VIEW DETAILS");
         puts(" 2) ADD RECORD");
         puts(" 3) EDIT RECORD");
@@ -39,6 +38,7 @@ int main() {
         puts(" 6) SEARCH RECORD");
         puts("-1) EXIT + SAVE");
         puts("----------------------------------------------------------");
+        puts("Please select from one of the following options:");
         FLUSH;
         scanf("%d", &choice);
 
@@ -57,7 +57,7 @@ int main() {
                 addRecord(&list);
                 break;
             case 3:
-                editRecord(list);
+                editRecord(&list);
                 break;
             case 4:
                 deleteRecord(&list);
