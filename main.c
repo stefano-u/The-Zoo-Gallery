@@ -8,15 +8,14 @@
 /*
  * To-Do List:
  * 1) EDIT Record
- * 2) DELETE Record
- * 3) SEARCH for a record 
+ * 2) SEARCH for a record 
  *      - Partial searching?
  *      - Range searching?
  * 
  */
 
 int main() {
-    // Opens text file for reading
+    // Opens text file for reading (r+)
     FILE *fpStart = fopen(FILENAME, "r+");
     if (fpStart == NULL) {
         printf("Error reading file.\n");
@@ -43,7 +42,7 @@ int main() {
         FLUSH;
         scanf("%d", &choice);
 
-        // Switch statements do not use cases for negative numbers
+        // Switch statements do not test for negative numbers
         if (choice == -1) {
             printf("\nThanks for using our app! Data has been saved to file!\n");
             break;
@@ -69,9 +68,9 @@ int main() {
 
         }
 
-    } while (choice != 0);
+    } while (choice != -1);
 
-    // Overwrite contents of file
+    // Overwrite contents of file (w+)
     FILE *fpEnd = fopen(FILENAME, "w+");
     if (fpEnd == NULL) {
         printf("Error reading file.\n");
@@ -79,8 +78,6 @@ int main() {
     }
     printToFile(fpEnd, list);
     fclose(fpEnd);
-
-    // Close file pointer
     
     
     // Free linked list & contents of nodes

@@ -14,10 +14,11 @@ animal_t* createList(FILE*);
 animal_t* createNodeFromFile(FILE*);
 void deleteList(animal_t**);
 void insertToList(animal_t**, animal_t*);
+void deleteNode(animal_t**, int);
 
-// Database operations
+// "Database" operations
 void displayListBrief(animal_t*);
-bool viewRecord(animal_t*, int);
+bool checkRecordExist(animal_t*, int, bool);
 void addRecord(animal_t**);
 void deleteRecord(animal_t**);
 void searchById(animal_t*);
