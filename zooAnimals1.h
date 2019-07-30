@@ -15,3 +15,4 @@ void printToFile(FILE*, animal_t*);
 void viewRecord(animal_t*);
 void addRecord(animal_t**);
 void insertToList(animal_t**, animal_t*);
+void strToUppercase(char*);

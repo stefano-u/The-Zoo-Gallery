@@ -2,19 +2,21 @@
 #include <stdlib.h>
 #include "zooAnimals1.h"
 
+#define FILENAME "dataNEW.txt"
 #define FLUSH stdin=freopen(NULL,"r",stdin)
 
 
 int main() {
-    // Opens text file for reading/writing
-    FILE *fp = fopen("dataNEW.txt", "r+");
-    if (fp == NULL) {
+    // Opens text file for reading
+    FILE *fpStart = fopen(FILENAME, "r+");
+    if (fpStart == NULL) {
         printf("Error reading file.\n");
         exit(1);
     }
 
     // Create linked list from file
-    animal_t* list = createList(fp);
+    animal_t* list = createList(fpStart);
+    fclose(fpStart);
 
 
     puts("========== Welcome to the Zoo Gallery ==========\n");
@@ -22,19 +24,19 @@ int main() {
 
     do {
         puts("Please select from one of the following options:");
-        puts("'1' to show all records and search for a specific record");
-        puts("'2' to add a record");
-        puts("'3 to edit a record");
-        puts("'4' to delete a record");
-        puts("'5' to search for a record");
-        puts("'-1' to quit");
+        puts(" 1) SHOW ALL RECORDS / VIEW DETAILS");
+        puts(" 2) ADD RECORD");
+        puts(" 3) EDIT RECORD");
+        puts(" 4) DELETE RECORD");
+        puts(" 6) SEARCH RECORD");
+        puts("-1) EXIT + SAVE");
         puts("----------------------------------------------------------");
         FLUSH;
         scanf("%d", &choice);
 
         // Switch statements do not use cases for negative numbers
         if (choice == -1) {
-            printf("\nThanks for using our app!\n");
+            printf("\nThanks for using our app! Data has been saved to file!\n");
             break;
         }
         
@@ -43,7 +45,7 @@ int main() {
                 displayListBrief(list);
                 break;
             case 2:
-                addRecord(&head);
+                addRecord(&list);
                 break;
             case 3:
                 break;
@@ -58,12 +60,18 @@ int main() {
 
     } while (choice != 0);
 
+    // Overwrite contents of file
+    FILE *fpEnd = fopen(FILENAME, "w+");
+    if (fpEnd == NULL) {
+        printf("Error reading file.\n");
+        exit(1);
+    }
+    printToFile(fpEnd, list);
+    fclose(fpEnd);
+
     // Close file pointer
-    fclose(fp);
-
-    // Print to file
-    printToFile(fp, list);
-
+    
+    
     // Free linked list & contents of nodes
     deleteList(&list);
 

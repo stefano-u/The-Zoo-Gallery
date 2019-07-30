@@ -125,7 +125,7 @@ void deleteList(animal_t** head) {
 }
 
 // Prints all contents of the linked list to the file
-void printToFile(FILE* fp, animal_t* head) {\
+void printToFile(FILE* fp, animal_t* head) {
     if (head == NULL) {
         printf("Linked List is empty! Cannot print to file.\n");
     } else {
@@ -153,56 +153,77 @@ void addRecord(animal_t** head) {
     char temp[MAX_LEN] = {0};
     
     // Ask user for animal ID
-    bool isValid = true;
+    bool isValid = false;
     do {
         printf("Enter Animal ID for new animal record: ");
         FLUSH;
         scanf("%d", &animalId);
         
-        animal_t* current = *head;
-        while (current != NULL) {
-            if (current->animalID == animalId) {
-                puts("This animal ID is already taken. Please try again.");
-                isValid = false;
-                break;
+        if (animalId > 0) {
+            isValid = true;
+            animal_t* current = *head;
+            while (current != NULL) {
+                if (current->animalID == animalId) {
+                    puts("This animal ID is already taken. Please try again.");
+                    isValid = false;
+                    break;
+                }
+                current = current->next;
             }
-            current = current->next;
+        } else {
+            puts("Please enter an Animal ID greater than 0");
         }
-    } while (!isValid);
-
+    } while (!isValid || animalId <= 0);
+    newNode->animalID = animalId;
     
     // Ask user for animal name
     printf("Enter the name of the animal: ");
-    fgets(temp, MAX_LEN, stdin);
     FLUSH;
+    fgets(temp, MAX_LEN, stdin);    
     REMOVEN(temp);
     newNode->name = (char*) calloc(strlen(temp)+1, sizeof(char));
     if (newNode->name == NULL) {
         printf("Cannot allocate memory for this animal's name!\n");
         return;
     }
+    strToUppercase(temp);
     strcpy(newNode->name, temp);
     
     // Ask user for animal's sex
-    do {
-        FLUSH;
+    do {        
         printf("Enter the sex of the animal (M/F): ");
-        scanf("%c", &sex);
-        if (sex != 'M' || sex != 'F') {
+        FLUSH;
+        sex = toupper(getchar());
+        if (sex != 'M' && sex != 'F') {
             printf("Please state 'M' or 'F'\n");
         }
-    } while (sex != 'M' || sex != 'F');
+    } while (sex != 'M' && sex != 'F');
+    newNode->sex = sex;
+    
+    // Ask user for animal quantity
+    do {
+       printf("Enter the quantity of the animal: ");
+       FLUSH;
+       scanf("%d", &quantity); 
+       
+       if (quantity <= 0) {
+           printf("Quantity must be greater than 0!\n");
+       }
+    } while (quantity <= 0);    
+    newNode->quantity = quantity;
+    
     
     // Ask user for animal location
     printf("Enter the location of the animal: ");
-    fgets(temp, MAX_LEN, stdin);
     FLUSH;
+    fgets(temp, MAX_LEN, stdin);    
     REMOVEN(temp);
     newNode->location = (char*) calloc(strlen(temp)+1, sizeof(char));
     if (newNode->location == NULL) {
         printf("Cannot allocate memory for this animal's location!\n");
         return;
     }
+    strToUppercase(temp);
     strcpy(newNode->location, temp);
 
     // Prints current information of new animal
@@ -220,6 +241,7 @@ void addRecord(animal_t** head) {
     char choice;
     do {
         printf("CONFIRMATION: Would you like to add this new record (Y/N)? ");
+        FLUSH;
         scanf("%c", &choice);
         choice = toupper(choice);
 
@@ -227,9 +249,15 @@ void addRecord(animal_t** head) {
             // If there's a record with the exact same name, sex, and location, then just INCREMENT the quantity
             animal_t* current = *head;
             bool recordExists = false;
+            
+            // Creates a temporary UPPERCASED version of the name + location (used for comparison)            
             while (current != NULL) {
-                if (current->sex == newNode->sex && strcmp(current->name, newNode->name) == 0 && strcmp(current->location, newNode->name)) {
-                    printf("This exact record already exists. Quantity is incremented.");
+                if (current->sex == newNode->sex &&
+                        strcmp(current->name, newNode->name) == 0 &&
+                        strcmp(current->location, newNode->location) == 0) {
+                        
+                    printf("This exact record already exists. Quantity is incremented.\n\n");
+                    current->quantity += quantity;
                     recordExists = true;
                     break;
                 }
@@ -239,29 +267,38 @@ void addRecord(animal_t** head) {
             // If animal doesn't exist in the list, then add it to the list
             if (!recordExists) {
                 insertToList(head, newNode);
-                printf("This record has been added to the list");
+                printf("This record has been added to the list\n\n");
             }
         } else if (choice == 'N') {
-            printf("The record will NOT be inserted!\n");
+            printf("The record will NOT be inserted!\n\n");
             free(newNode->name);
             free(newNode->location);
             free(newNode);
         }
-    } while (choice != 'Y' || choice != 'N');
+    } while (choice != 'Y' && choice != 'N');
 }
 
+void strToUppercase(char* string) {
+    for (int i = 0; i < strlen(string); i++) {
+        string[i] = toupper(string[i]);
+    }
+}
+
+// *** FIX THIS HERE ***
 void insertToList(animal_t** head, animal_t* node) {
     // insert as first:
-    if (*head == NULL || node->animalID >= (*head)->animalID) {
+    if (*head == NULL || node->animalID <= (*head)->animalID) {
+        printf("\nHere\n");
         node->next = *head;
         *head = node;
     } else {
         animal_t* current = *head;
-        while (current->next != NULL && (node->animalID < current->next->animalID)) {
+        while (current->next != NULL && (node->animalID > current->next->animalID)) {
             current = current->next;
         }
         node->next = current->next;
         current->next = node;
+        printf("\nThere\n");
     }
 }
 

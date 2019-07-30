@@ -1,50 +1,50 @@
-1,Giraffe,M,5,African Savannah
-2,Giraffe,F,2,African Savannah
-3,Penguin,M,20,Iceberg Lounge
-4,Penguin,F,13,Iceberg Lounge
-5,Koala,M,3,Koala Outback
-6,Koala,F,8,Koala Outback
-7,Lion,M,2,Grassy Plains
-8,Lioness,F,1,Grassy Plains
-9,Cougar,M,5,Grassy Plains
-10,Cougar,F,2,Grassy Plains
-11,Tiger,M,1,Asian Falls
-12,Tiger,F,2,Asian Falls
-13,Elephant,M,4,Asian Falls
-14,Elephant,F,6,Asian Falls
-15,Rhino,M,2,African Savannah
-16,Rhino,F,4,African Savannah
-17,Deer,M,10,Wild Exhibit
-18,Deer,F,11,Wild Exhibit
-19,Zebra,M,5,African Savannah
-20,Zebra,F,6,African Savannah
-21,Gazelle,M,10,African Savannah
-22,Gazelle,F,20,African Savannah
-23,Prarie Dog,M,23,High Plains
-24,Prarie Dog,F,12,High Plains
-25,Alligator,M,3,Swamp Exhibit
-26,Alligator,F,5,Swamp Exhibit
-27,Tortoise,M,2,African Savannah
-28,Tortoise,F,4,African Savannah
-29,Black Bear,M,1,Piney Woods
-30,Black Bear,F,2,Piney Woods
-31,Fox,M,4,High Plains
-32,Fox,F,3,High Plains
-33,Chimpanzee,M,5,Primate Exhibit
-34,Chimpanzee,F,10,Primate Exhibit
-35,Orangutan,M,2,Primate Exhibit
-36,Orangutan,F,1,Primate Exhibit
-37,Mandrill,M,1,Primate Exhibit
-38,Mandrill,F,1,Primate Exhibit
-39,Spider Monkey,M,2,Primate Exhibit
-40,Spider Monkey,F,3,Primate Exhibit
-41,Gorilla,M,1,Primate Exhibit
-42,Gorilla,F,2,Primate Exhibit
-43,Hippo,M,2,African Savannah
-44,Hippo,F,3,African Savannah
-45,Bison,M,1,High Plains
-46,Bison,F,2,High Plains
-47,Fruit Bat,M,10,Cave Enclosure
-48,Fruit Bat,F,7,Cave Enclosure
-49,Porcupine,M,3,Wild Exhibit
-50,Porcupine,F,9,Wild Exhibit
+1,GIRAFFE,M,5,AFRICAN SAVANNAH
+2,GIRAFFE,F,2,AFRICAN SAVANNAH
+3,PENGUIN,M,20,ICEBERG LOUNGE
+4,PENGUIN,F,13,ICEBERG LOUNGE
+5,KOALA,M,3,KOALA OUTBACK
+6,KOALA,F,8,KOALA OUTBACK
+7,LION,M,2,GRASSY PLAINS
+8,LIONESS,F,1,GRASSY PLAINS
+9,COUGAR,M,5,GRASSY PLAINS
+10,COUGAR,F,2,GRASSY PLAINS
+11,TIGER,M,1,ASIAN FALLS
+12,TIGER,F,2,ASIAN FALLS
+13,ELEPHANT,M,4,ASIAN FALLS
+14,ELEPHANT,F,6,ASIAN FALLS
+15,RHINO,M,2,AFRICAN SAVANNAH
+16,RHINO,F,4,AFRICAN SAVANNAH
+17,DEER,M,10,WILD EXHIBIT
+18,DEER,F,11,WILD EXHIBIT
+19,ZEBRA,M,5,AFRICAN SAVANNAH
+20,ZEBRA,F,6,AFRICAN SAVANNAH
+21,GAZELLE,M,10,AFRICAN SAVANNAH
+22,GAZELLE,F,20,AFRICAN SAVANNAH
+23,PRARIE DOG,M,23,HIGH PLAINS
+24,PRARIE DOG,F,12,HIGH PLAINS
+25,ALLIGATOR,M,3,SWAMP EXHIBIT
+26,ALLIGATOR,F,5,SWAMP EXHIBIT
+27,TORTOISE,M,2,AFRICAN SAVANNAH
+28,TORTOISE,F,4,AFRICAN SAVANNAH
+29,BLACK BEAR,M,1,PINEY WOODS
+30,BLACK BEAR,F,2,PINEY WOODS
+31,FOX,M,4,HIGH PLAINS
+32,FOX,F,3,HIGH PLAINS
+33,CHIMPANZEE,M,5,PRIMATE EXHIBIT
+34,CHIMPANZEE,F,10,PRIMATE EXHIBIT
+35,ORANGUTAN,M,2,PRIMATE EXHIBIT
+36,ORANGUTAN,F,1,PRIMATE EXHIBIT
+37,MANDRILL,M,1,PRIMATE EXHIBIT
+38,MANDRILL,F,1,PRIMATE EXHIBIT
+39,SPIDER MONKEY,M,2,PRIMATE EXHIBIT
+40,SPIDER MONKEY,F,3,PRIMATE EXHIBIT
+41,GORILLA,M,1,PRIMATE EXHIBIT
+42,GORILLA,F,2,PRIMATE EXHIBIT
+43,HIPPO,M,2,AFRICAN SAVANNAH
+44,HIPPO,F,3,AFRICAN SAVANNAH
+45,BISON,M,1,HIGH PLAINS
+46,BISON,F,4,HIGH PLAINS
+47,FRUIT BAT,M,10,CAVE ENCLOSURE
+48,FRUIT BAT,F,7,CAVE ENCLOSURE
+49,PORCUPINE,M,3,WILD EXHIBIT
+50,PORCUPINE,F,9,WILD EXHIBIT
