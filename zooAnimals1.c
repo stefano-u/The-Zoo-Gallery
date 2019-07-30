@@ -12,6 +12,7 @@
 
 
 // Create nodes based on input from file
+
 animal_t* createNodeFromFile(FILE* fp) {
 
     char temp[MAX_LEN] = {0};
@@ -80,6 +81,7 @@ animal_t* createNodeFromFile(FILE* fp) {
 }
 
 // Creates a linked list based on data on file
+
 animal_t* createList(FILE *fp) {
     animal_t *node = NULL, *current = NULL, *head = NULL;
 
@@ -97,21 +99,40 @@ animal_t* createList(FILE *fp) {
 }
 
 // Displays 3 fields to the screen
+
 void displayListBrief(animal_t* head) {
+    puts("\n========== SHOW ALL RECORDS ==========");
     if (head == NULL) {
         printf("Linked List is empty!\n");
     } else {
         animal_t* current = head;
-        puts("\n========== SHOW ALL RECORDS ==========");
         while (current != NULL) {
             printf("%d) %s (%c)\n", current->animalID, current->name, current->sex);
             current = current->next;
         }
-        viewRecord(head);
     }
 }
 
+// Search an animal by its AnimalID
+
+void searchById(animal_t* head) {
+    puts("\n========== SEARCH BY ANIMAL ID ==========");
+    int recordId;
+    do {
+        printf("Enter the Animal ID of record to SEARCH (-1 to exit): ");
+        FLUSH;
+        scanf("%d", &recordId);
+
+        if (recordId > 0) {
+            viewRecord(head, recordId);
+        } else if (recordId <= 1 && recordId != -1) {
+            puts("Please enter an Animal ID greater than 0");
+        }
+    } while (recordId != -1);
+}
+
 // Free linked list & contents of nodes
+
 void deleteList(animal_t** head) {
     animal_t* current = *head;
     animal_t* nextLocation = NULL;
@@ -125,6 +146,7 @@ void deleteList(animal_t** head) {
 }
 
 // Prints all contents of the linked list to the file
+
 void printToFile(FILE* fp, animal_t* head) {
     if (head == NULL) {
         printf("Linked List is empty! Cannot print to file.\n");
@@ -138,27 +160,28 @@ void printToFile(FILE* fp, animal_t* head) {
 }
 
 // Add a new record 
+
 void addRecord(animal_t** head) {
     puts("\n========== ADD NEW RECORD ==========");
-    
+
     // Allocate memory for new node
     animal_t* newNode = (animal_t*) malloc(sizeof (animal_t));
     if (newNode == NULL) {
         printf("Cannot allocate memory for this animal!\n");
         return;
     }
-    
+
     int animalId, quantity;
     char sex;
     char temp[MAX_LEN] = {0};
-    
+
     // Ask user for animal ID
     bool isValid = false;
     do {
         printf("Enter Animal ID for new animal record: ");
         FLUSH;
         scanf("%d", &animalId);
-        
+
         if (animalId > 0) {
             isValid = true;
             animal_t* current = *head;
@@ -175,22 +198,22 @@ void addRecord(animal_t** head) {
         }
     } while (!isValid || animalId <= 0);
     newNode->animalID = animalId;
-    
+
     // Ask user for animal name
     printf("Enter the name of the animal: ");
     FLUSH;
-    fgets(temp, MAX_LEN, stdin);    
+    fgets(temp, MAX_LEN, stdin);
     REMOVEN(temp);
-    newNode->name = (char*) calloc(strlen(temp)+1, sizeof(char));
+    newNode->name = (char*) calloc(strlen(temp) + 1, sizeof (char));
     if (newNode->name == NULL) {
         printf("Cannot allocate memory for this animal's name!\n");
         return;
     }
     strToUppercase(temp);
     strcpy(newNode->name, temp);
-    
+
     // Ask user for animal's sex
-    do {        
+    do {
         printf("Enter the sex of the animal (M/F): ");
         FLUSH;
         sex = toupper(getchar());
@@ -199,26 +222,26 @@ void addRecord(animal_t** head) {
         }
     } while (sex != 'M' && sex != 'F');
     newNode->sex = sex;
-    
+
     // Ask user for animal quantity
     do {
-       printf("Enter the quantity of the animal: ");
-       FLUSH;
-       scanf("%d", &quantity); 
-       
-       if (quantity <= 0) {
-           printf("Quantity must be greater than 0!\n");
-       }
-    } while (quantity <= 0);    
+        printf("Enter the quantity of the animal: ");
+        FLUSH;
+        scanf("%d", &quantity);
+
+        if (quantity <= 0) {
+            printf("Quantity must be greater than 0!\n");
+        }
+    } while (quantity <= 0);
     newNode->quantity = quantity;
-    
-    
+
+
     // Ask user for animal location
     printf("Enter the location of the animal: ");
     FLUSH;
-    fgets(temp, MAX_LEN, stdin);    
+    fgets(temp, MAX_LEN, stdin);
     REMOVEN(temp);
-    newNode->location = (char*) calloc(strlen(temp)+1, sizeof(char));
+    newNode->location = (char*) calloc(strlen(temp) + 1, sizeof (char));
     if (newNode->location == NULL) {
         printf("Cannot allocate memory for this animal's location!\n");
         return;
@@ -227,7 +250,7 @@ void addRecord(animal_t** head) {
     strcpy(newNode->location, temp);
 
     // Prints current information of new animal
-    printf("Here are the information for your animal:\n ");
+    printf("Here are the information for the new animal:\n ");
     printf("\n---------------------------------------------\n");
     printf("Animal ID:\t%d\n", newNode->animalID);
     printf("Name:\t\t%s\n", newNode->name);
@@ -249,14 +272,14 @@ void addRecord(animal_t** head) {
             // If there's a record with the exact same name, sex, and location, then just INCREMENT the quantity
             animal_t* current = *head;
             bool recordExists = false;
-            
+
             // Creates a temporary UPPERCASED version of the name + location (used for comparison)            
             while (current != NULL) {
                 if (current->sex == newNode->sex &&
                         strcmp(current->name, newNode->name) == 0 &&
                         strcmp(current->location, newNode->location) == 0) {
-                        
-                    printf("This exact record already exists. Quantity is incremented.\n\n");
+
+                    printf("This exact record already exists.\n***Quantity of existing animal is incremented.***\n\n");
                     current->quantity += quantity;
                     recordExists = true;
                     break;
@@ -278,13 +301,16 @@ void addRecord(animal_t** head) {
     } while (choice != 'Y' && choice != 'N');
 }
 
+// Converts a string to uppercase
+
 void strToUppercase(char* string) {
     for (int i = 0; i < strlen(string); i++) {
         string[i] = toupper(string[i]);
     }
 }
 
-// *** FIX THIS HERE ***
+// Inserts node into the Linked List in order of the AnimalID
+
 void insertToList(animal_t** head, animal_t* node) {
     // insert as first:
     if (*head == NULL || node->animalID <= (*head)->animalID) {
@@ -302,20 +328,83 @@ void insertToList(animal_t** head, animal_t* node) {
     }
 }
 
-// Displays specific records
-void viewRecord(animal_t* head) {
-    puts("\n========== VIEW SPECIFIC RECORD ==========");
-    printf("Enter the Animal ID to view details of that record (-1 to exit): ");
+void deleteRecord(animal_t** head) {
+    puts("\n========== DELETE RECORD ==========");
     int recordId;
-    FLUSH;
-    scanf("%d", &recordId);   
+    char choice;
+    do {
+        printf("Enter the Animal ID of record to DELETE (-1 to exit): ");
+        FLUSH;
+        scanf("%d", &recordId);
 
-    while (recordId != -1) {
+        if (recordId > 0) {
+            if (viewRecord(*head, recordId)) {
+                do {
+                    printf("CONFIRMATION: Would you like to DELETE this record (Y/N)? ");
+                    FLUSH;
+                    scanf("%c", &choice);
+                    choice = toupper(choice);
+
+                    if (choice == 'Y') {
+
+                        if (recordId == 1) {
+                            // if recordId = 1, then delete the head node
+                            animal_t* toDelete = *head;
+                            *head = (*head)->next;
+                            free(toDelete);
+                            printf("The record has been deleted successfully!\n\n");
+                        } else {
+                            // delete records AFTER the head node
+                            animal_t* current = *head;
+                            animal_t* toDelete = NULL;
+
+                            // Moves to the node BEFORE the specified node and keeps track of it
+                            while (current != NULL) {
+                                if (current->next->animalID == recordId) {
+                                    break;
+                                }
+                                current = current->next;
+                            }
+                            
+                            viewRecord(*head, current->animalID);
+                            
+                            // Saves node to be deleted (so that we can free it)
+                            toDelete = current->next;
+
+                            // Check if node is LAST or not
+                            if (toDelete->next == NULL) {
+                                current->next = NULL;
+                            } else {
+                                // Sets current node to point to the node AFTER
+                                current->next = toDelete->next;
+                            }
+
+                            free(toDelete);
+                            printf("The record has been deleted successfully!\n\n");
+                        }
+
+                    } else if (choice == 'N') {
+                        printf("The record will NOT be deleted!\n\n");
+                    }
+
+                } while (choice != 'Y' && choice != 'N');
+            }
+        } else if (recordId <= 1 && recordId != -1) {
+            puts("Please enter an Animal ID greater than 0");
+        }
+    } while (recordId != -1);
+
+
+}
+
+// Displays specific records (returns true if record is found, else return false)
+bool viewRecord(animal_t* head, int animalId) {
+    if (head == NULL) {
+        printf("Linked List is empty!\n");
+    } else {
         animal_t* current = head;
-
-        bool recordExists = false;
         while (current != NULL) {
-            if (current->animalID == recordId) {
+            if (current->animalID == animalId) {
                 printf("\n---------------------------------------------\n");
                 printf("Animal ID:\t%d\n", current->animalID);
                 printf("Name:\t\t%s\n", current->name);
@@ -323,20 +412,14 @@ void viewRecord(animal_t* head) {
                 printf("Quantity:\t%d\n", current->quantity);
                 printf("Location:\t%s", current->location);
                 printf("\n---------------------------------------------\n\n");
-                
-                recordExists = true;
-                break;
+
+                return true;
             }
             current = current->next;
         }
-        if (!recordExists) {
-            printf("This record does not exist.\n\n");
-        }
-        
-        printf("Enter the Animal ID to view details of that record (-1 to exit): ");
-        FLUSH;
-        scanf("%d", &recordId);
+
+        printf("This record does not exist.\n\n");
+        return false;
     }
-    puts("");
 }
 

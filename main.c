@@ -5,6 +5,15 @@
 #define FILENAME "dataNEW.txt"
 #define FLUSH stdin=freopen(NULL,"r",stdin)
 
+/*
+ * To-Do List:
+ * 1) EDIT Record
+ * 2) DELETE Record
+ * 3) SEARCH for a record 
+ *      - Partial searching?
+ *      - Range searching?
+ * 
+ */
 
 int main() {
     // Opens text file for reading
@@ -43,6 +52,7 @@ int main() {
         switch (choice) {
             case 1:
                 displayListBrief(list);
+                searchById(list);
                 break;
             case 2:
                 addRecord(&list);
@@ -50,6 +60,7 @@ int main() {
             case 3:
                 break;
             case 4:
+                deleteRecord(&list);
                 break;
             case 5:
                 break;
