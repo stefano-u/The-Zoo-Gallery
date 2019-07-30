@@ -1,3 +1,3 @@
-build/Debug/Cygwin-Windows/main.o: main.c zooAnimals1.h
+build/Debug/Cygwin-Windows/main.o: main.c zooAnimals.h
 
-zooAnimals1.h:
+zooAnimals.h:

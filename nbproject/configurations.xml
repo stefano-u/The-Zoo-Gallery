@@ -4,7 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>zooAnimals1.h</itemPath>
+      <itemPath>zooAnimals.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -14,7 +14,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>main.c</itemPath>
-      <itemPath>zooAnimals1.c</itemPath>
+      <itemPath>zooAnimals.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -40,9 +40,9 @@
       </compileType>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="zooAnimals1.c" ex="false" tool="0" flavor2="0">
+      <item path="zooAnimals.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="zooAnimals1.h" ex="false" tool="3" flavor2="0">
+      <item path="zooAnimals.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -67,9 +67,9 @@
       </compileType>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="zooAnimals1.c" ex="false" tool="0" flavor2="0">
+      <item path="zooAnimals.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="zooAnimals1.h" ex="false" tool="3" flavor2="0">
+      <item path="zooAnimals.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

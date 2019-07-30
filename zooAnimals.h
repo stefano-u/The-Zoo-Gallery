@@ -20,9 +20,14 @@ void deleteNode(animal_t**, int);
 void displayListBrief(animal_t*);
 bool checkRecordExist(animal_t*, int, bool);
 void addRecord(animal_t**);
+void editRecord(animal_t*);
 void deleteRecord(animal_t**);
 void searchById(animal_t*);
 
 // Miscellaneous operations
 void strToUppercase(char*);
 void printToFile(FILE*, animal_t*);
+int getAnimalId(animal_t*);
+void setAnimalString(char*);
+char getSex();
+int getQuantity();

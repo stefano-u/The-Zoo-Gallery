@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "zooAnimals1.h"
+#include "zooAnimals.h"
 
 #define FILENAME "dataNEW.txt"
 #define FLUSH stdin=freopen(NULL,"r",stdin)
@@ -57,6 +57,7 @@ int main() {
                 addRecord(&list);
                 break;
             case 3:
+                editRecord(list);
                 break;
             case 4:
                 deleteRecord(&list);
@@ -65,6 +66,7 @@ int main() {
                 break;
             default:
                 printf("Invalid choice! Please try again!");
+                break;
 
         }
 

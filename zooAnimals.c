@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
-#include "zooAnimals1.h"
+#include "zooAnimals.h"
 
 #define MAX_LEN 100
 #define FLUSH stdin=freopen(NULL,"r",stdin)
@@ -32,7 +32,6 @@ animal_t* createList(FILE *fp) {
 
     return head;
 }
-
 
 /* ===================================================================================
  * Author: Stefano Gregor Unlayao
@@ -104,7 +103,6 @@ animal_t* createNodeFromFile(FILE* fp) {
         return NULL;
     }
 }
-
 
 /* ===================================================================================
  * Author: Stefano Gregor Unlayao
@@ -207,7 +205,6 @@ void displayListBrief(animal_t* head) {
     }
 }
 
-
 /* ===================================================================================
  * Author: Stefano Gregor Unlayao
  * Description: Displays specific record information 
@@ -248,95 +245,43 @@ bool checkRecordExist(animal_t* head, int animalId, bool showDetails) {
  */
 void addRecord(animal_t** head) {
     puts("\n========== ADD NEW RECORD ==========");
-    int animalId, quantity;
-    char sex;
     char temp[MAX_LEN] = {0};
-
+    
     // Allocate memory for new node
     animal_t* newNode = (animal_t*) malloc(sizeof (animal_t));
     if (newNode == NULL) {
         printf("Cannot allocate memory for this animal!\n");
-        return;
+        exit(1);
     }
 
+    // Set animal's ID
+    newNode->animalID = getAnimalId(*head);
 
-
-    // Ask user for animal ID (must be greater than 0)
-    do {
-        printf("Enter Animal ID for new animal record: ");
-        FLUSH;
-        scanf("%d", &animalId);
-
-        // Checks if the animal ID used in an existing record
-        // Calls checkRecordExist(), but does not show details
-        if (animalId > 0 && checkRecordExist(*head, animalId, false)) {
-            puts("This animal ID is already taken. Please try again.\n");
-        } else if (animalId <= 0) {
-            puts("Please enter an Animal ID greater than 0.\n");
-        }
-    } while (animalId <= 0 || checkRecordExist(*head, animalId, false));
-    newNode->animalID = animalId;
-
-
-
-    // Ask user for animal name
+    // Set animal's name
     printf("Enter the name of the animal: ");
-    FLUSH;
-    fgets(temp, MAX_LEN, stdin);
-    REMOVEN(temp);
+    setAnimalString(temp);
     newNode->name = (char*) calloc(strlen(temp) + 1, sizeof (char));
     if (newNode->name == NULL) {
         printf("Cannot allocate memory for this animal's name!\n");
-        return;
+        exit(1);
     }
-    // Converts name to uppercase
-    strToUppercase(temp);
-    strcpy(newNode->name, temp);
+    strcpy(newNode->name, temp);   
+    
+    // Set animal's sex
+    newNode->sex = getSex();
 
+    // Set animal's quantity
+    newNode->quantity = getQuantity();
 
-
-
-    // Ask user for animal's sex
-    do {
-        printf("Enter the sex of the animal (M/F): ");
-        FLUSH;
-        // Converts char to uppercase
-        sex = toupper(getchar());
-        if (sex != 'M' && sex != 'F') {
-            printf("Please state 'M' or 'F'\n");
-        }
-    } while (sex != 'M' && sex != 'F');
-    newNode->sex = sex;
-
-
-
-    // Ask user for animal quantity
-    do {
-        printf("Enter the quantity of the animal: ");
-        FLUSH;
-        scanf("%d", &quantity);
-        if (quantity <= 0) {
-            printf("Quantity must be greater than 0!\n");
-        }
-    } while (quantity <= 0);
-    newNode->quantity = quantity;
-
-
-
-    // Ask user for animal location
+    // Set animal's location
     printf("Enter the location of the animal: ");
-    FLUSH;
-    fgets(temp, MAX_LEN, stdin);
-    REMOVEN(temp);
+    setAnimalString(temp);
     newNode->location = (char*) calloc(strlen(temp) + 1, sizeof (char));
     if (newNode->location == NULL) {
         printf("Cannot allocate memory for this animal's location!\n");
-        return;
+        exit(1);
     }
-    // Converts name to uppercase
-    strToUppercase(temp);
-    strcpy(newNode->location, temp);
-
+    strcpy(newNode->location, temp);   
 
 
     // Prints current information of new animal
@@ -370,7 +315,7 @@ void addRecord(animal_t** head) {
 
                     printf("This exact record already exists.\n"
                             "***Quantity of existing animal is incremented.***\n\n");
-                    current->quantity += quantity;
+                    current->quantity += newNode->quantity;
                     recordExists = true;
                     break;
                 }
@@ -391,6 +336,114 @@ void addRecord(animal_t** head) {
     } while (choice != 'Y' && choice != 'N');
 }
 
+/* ===================================================================================
+ * Author: Stefano Gregor Unlayao
+ * Description: Edits node in the linked list (with validation)
+ */
+void editRecord(animal_t* head) {
+    puts("\n========== EDIT RECORD ==========");
+    int recordId;
+    char confirmChoice;
+    int editChoice;
+
+    // Contiually asks user to enter an AnimalID to delete
+    do {
+        printf("Enter the Animal ID of record to DELETE (-1 to exit): ");
+        FLUSH;
+        scanf("%d", &recordId);
+
+        // Checks if animal ID is valid & existing
+        if (recordId > 0 && checkRecordExist(head, recordId, true)) {
+
+            animal_t* toBeEdited = NULL;
+            animal_t* current = head;
+            while (current != NULL) {
+                if (current->animalID == recordId) {
+                    toBeEdited = current;
+                    break;
+                }
+                current = current->next;
+            }
+            
+            int tempAnimalId = toBeEdited->animalID;
+            
+            char tempName[MAX_LEN] = {0}
+            strcpy(tempName, toBeEdited->name);
+            REMOVEN(tempName);
+            
+            char tempSex = toBeEdited->sex;
+            int tempQuantitiy = toBeEdited->quantity;
+            
+            char tempLocation[MAX_LEN] = {0}
+            strcpy(tempLocation, toBeEdited->location);
+            
+            REMOVEN(tempLocation);
+            
+            
+
+            do {
+                printf("\n---------------------------------------------\n");
+                printf("1) Animal ID:\t%d\n", tempAnimalId);
+                printf("2) Name:\t\t%s\n", tempName);
+                printf("3) Sex:\t\t%c\n", tempSex);
+                printf("4) Quantity:\t%d\n", tempQuantitiy);
+                printf("5) Location:\t%s", tempLocation);
+                printf("\nPlease select a field to edit (-1 to finish editing): ");
+                printf("\n---------------------------------------------\n\n");
+                scanf("%d", &editChoice);
+
+                if (editChoice == -1) {
+                    break;
+                }
+
+                switch (editChoice) {
+                    case 1:
+                        break;
+                    case 2:
+                        setAnimalName(&(newNode->name));
+                        break;
+                    case 3:
+                        setSex(&(newNode->sex));
+                        break;
+                    case 4:
+                        setQuantity(&(newNode->quantity));
+                        break;
+                    case 5:
+                        setAnimalLocation(&(newNode->location));
+                        break;
+                    default:
+                        printf("Invalid choice! Please try again!");
+                        break;
+
+                }
+
+            } while (editChoice != -1);
+
+
+            // Confirms with the user if they want to delete the record
+            do {
+                printf("CONFIRMATION: Would you like to EDIT this record (Y/N)? ");
+                FLUSH;
+                scanf("%c", &confirmChoice);
+                confirmChoice = toupper(confirmChoice);
+
+                if (confirmChoice == 'Y') {
+
+                } else if (confirmChoice == 'N') {
+                    printf("The record will NOT be deleted!\n\n");
+                }
+            } while (confirmChoice != 'Y' && confirmChoice != 'N');
+
+
+
+
+
+        } else if (recordId <= 1 && recordId != -1) {
+            puts("Please enter an Animal ID greater than 0\n");
+        }
+
+    } while (recordId != -1);
+}
 
 /* ===================================================================================
  * Author: Stefano Gregor Unlayao
@@ -406,7 +459,7 @@ void deleteRecord(animal_t** head) {
         printf("Enter the Animal ID of record to DELETE (-1 to exit): ");
         FLUSH;
         scanf("%d", &recordId);
-        
+
         // Checks if animal ID is valid & existing
         if (recordId > 0 && checkRecordExist(*head, recordId, true)) {
             // Confirms with the user if they want to delete the record
@@ -415,19 +468,19 @@ void deleteRecord(animal_t** head) {
                 FLUSH;
                 scanf("%c", &choice);
                 choice = toupper(choice);
-                
+
                 if (choice == 'Y') {
                     deleteNode(head, recordId);
                 } else if (choice == 'N') {
                     printf("The record will NOT be deleted!\n\n");
-                }                
+                }
             } while (choice != 'Y' && choice != 'N');
-            
-            
+
+
         } else if (recordId <= 1 && recordId != -1) {
             puts("Please enter an Animal ID greater than 0\n");
         }
-        
+
     } while (recordId != -1);
 }
 
@@ -479,7 +532,6 @@ void printToFile(FILE* fp, animal_t* head) {
     }
 }
 
-
 /* ===================================================================================
  * Author: Stefano Gregor Unlayao
  * Description: Converts a string to uppercase
@@ -490,8 +542,75 @@ void strToUppercase(char* string) {
     }
 }
 
+/* ===================================================================================
+ * Author: Stefano Gregor Unlayao
+ * Description: Ask user for the animal's ID (with validation)
+ */
+int getAnimalId(animal_t* head) {
+    // Ask user for animal ID (must be greater than 0)
+    int animalId;
+    do {
+        printf("Enter Animal ID for new animal record: ");
+        FLUSH;
+        scanf("%d", &animalId);
 
+        // Checks if the animal ID used in an existing record
+        // Calls checkRecordExist(), but does not show details
+        if (animalId > 0 && checkRecordExist(head, animalId, false)) {
+            puts("This animal ID is already taken. Please try again.\n");
+        } else if (animalId <= 0) {
+            puts("Please enter an Animal ID greater than 0.\n");
+        }
+    } while (animalId <= 0 || checkRecordExist(head, animalId, false));
+    return animalId;
+}
 
+/* ===================================================================================
+ * Author: Stefano Gregor Unlayao
+ * Description: Ask user for the animal's name
+ */
+void setAnimalString(char* name) {    
+    FLUSH;
+    fgets(name, MAX_LEN, stdin);
+    REMOVEN(name);
 
+    // Converts string to uppercase
+    strToUppercase(name);
+}
 
+/* ===================================================================================
+ * Author: Stefano Gregor Unlayao
+ * Description: Ask user for the animal's sex (with validation)
+ */
+char getSex() {
+    // Ask user for animal's sex
+    char sex;
+    do {
+        printf("Enter the sex of the animal (M/F): ");
+        FLUSH;
+        // Converts char to uppercase
+        sex = toupper(getchar());
 
+        if (sex != 'M' && sex != 'F') {
+            printf("Please state 'M' or 'F'\n");
+        }
+    } while (sex != 'M' && sex != 'F');
+    return sex;
+}
+
+/* ===================================================================================
+ * Author: Stefano Gregor Unlayao
+ * Description: Ask user for the animal's quantity (with validation)
+ */
+int getQuantity() {
+    int quantity;
+    do {
+        printf("Enter the quantity of the animal: ");
+        FLUSH;
+        scanf("%d", &quantity);
+        if (quantity <= 0) {
+            printf("Quantity must be greater than 0!\n");
+        }
+    } while (quantity <= 0);
+    return quantity;
+}
