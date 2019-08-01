@@ -7,6 +7,7 @@ typedef struct animal {
     int quantity;
     char* location;
     struct animal* next;
+    struct animal* prev;
 } animal_t;
 
 // Linked List operations
@@ -15,10 +16,13 @@ animal_t* createNodeFromFile(FILE*);
 void deleteList(animal_t**);
 void insertToList(animal_t**, animal_t*);
 void deleteNode(animal_t**, int);
+int binarySearch(animal_t*, int);
+animal_t* findMiddleNode(animal_t*, animal_t*);
+int getNumNodesFromList(animal_t*);
 
 // "Database" operations
 void displayListBrief(animal_t*);
-bool checkRecordExist(animal_t*, int, bool);
+void showRecord(animal_t*, int);
 void addRecord(animal_t**);
 void editRecord(animal_t**);
 void deleteRecord(animal_t**);
@@ -28,6 +32,7 @@ void searchById(animal_t*);
 void strToUppercase(char*);
 void printToFile(FILE*, animal_t*);
 int getAnimalId(animal_t*);
-void setAnimalString(char*);
+void setAnimalName(char*);
+void setAnimalLocation(char*);
 char getSex();
 int getQuantity();

@@ -7,7 +7,8 @@
 
 /*
  * To-Do List:
- * 1) SEARCH for a record 
+ * 1) Get number of records 
+ * 2) SEARCH for a record 
  *      - Partial searching?
  *      - Range searching?
  * 
@@ -20,10 +21,12 @@ int main() {
         printf("Error reading file.\n");
         exit(1);
     }
-
+    
     // Create linked list from file
     animal_t* list = createList(fpStart);
     fclose(fpStart);
+    
+//    printf("%d", binarySearch(45, list));
 
 
     puts("========== Welcome to the Zoo Gallery ==========\n");
