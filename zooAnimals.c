@@ -14,7 +14,7 @@
 // ============================= Linked List Operations ==============================
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Creates a linked list based on data on input file
  */
 animal_t* createList(FILE *fp) {
@@ -35,7 +35,7 @@ animal_t* createList(FILE *fp) {
 }
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Create linked list nodes based on input from file
  */
 animal_t* createNodeFromFile(FILE* fp) {
@@ -107,7 +107,7 @@ animal_t* createNodeFromFile(FILE* fp) {
 }
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Frees memory allocate for node's name + location, and the node itself
  */
 void deleteList(animal_t** head) {
@@ -226,11 +226,13 @@ int binarySearch(animal_t* head, int key) {
  * Reference: https://cs.stackexchange.com/questions/90777/how-to-find-middle-element-of-doubly-linked-list-using-head-and-tail
  */
 animal_t* findMiddleNode(animal_t* head, animal_t* tail) {
+    // Keep doing this until head == tail
     while (head != tail) {
+        // Move the tail backward
         if (head != tail) {
             tail = tail->prev;
         }
-
+        // Move the head forward
         if (head != tail) {
             head = head->next;
         }
@@ -239,7 +241,7 @@ animal_t* findMiddleNode(animal_t* head, animal_t* tail) {
 }
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Returns the number of nodes in the list
  */
 int getNumNodesFromList(animal_t* head) {
@@ -259,7 +261,7 @@ int getNumNodesFromList(animal_t* head) {
 // ============================= "Database" Operations ===============================
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Display 3 fields to the screen
  */
 void displayListBrief(animal_t* head) {
@@ -276,7 +278,7 @@ void displayListBrief(animal_t* head) {
 }
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Displays specific record information 
  *              (returns true if record is found, else return false)
  */
@@ -301,7 +303,7 @@ void showRecord(animal_t* head, int animalId) {
 }
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Adds new node to linked list (with validation)
  */
 void addRecord(animal_t** head) {
@@ -562,7 +564,7 @@ void editRecord(animal_t**head) {
 }
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Deletes node in the linked list (with validation)
  */
 void deleteRecord(animal_t** head) {
@@ -603,7 +605,7 @@ void deleteRecord(animal_t** head) {
 }
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Search an animal by its AnimalID
  */
 void searchById(animal_t* head) {
@@ -637,7 +639,7 @@ void searchById(animal_t* head) {
 // ============================= Miscellaneous Operations ===============================
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Prints contents of linked list to file
  */
 void printToFile(FILE* fp, animal_t* head) {
