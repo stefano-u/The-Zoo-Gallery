@@ -7,6 +7,10 @@
  * To-Do List:
  * 1) Range Searching
  * 2) Put more data entries in the file
+ * 3) Enumerating through the locations
+ * 4) Fix the search (how did that break)
+ * 5) Automatically update animal ID
+ * 6) Prevent user from editing the ID
  * 
  */
 
