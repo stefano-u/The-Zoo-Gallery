@@ -1,5 +1,10 @@
 #include <stdbool.h>
 
+#define MAX_LEN 100
+#define FLUSH stdin=freopen(NULL,"r",stdin)
+#define REMOVERN(str) str[strcspn(str,"\r\n")]=0
+#define REMOVEN(str) str[strcspn(str,"\n")]=0
+
 typedef struct animal {
     int animalID;
     char* name;
@@ -27,8 +32,11 @@ void addRecord(animal_t**);
 void editRecord(animal_t**);
 void deleteRecord(animal_t**);
 void searchById(animal_t*);
+void searchOptions(animal_t*);
+void searchByName(animal_t*);
 
 // Miscellaneous operations
+void clearScreen();
 void strToUppercase(char*);
 void printToFile(FILE*, animal_t*);
 int getAnimalId(animal_t*);

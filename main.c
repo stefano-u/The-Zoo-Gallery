@@ -1,15 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "zooAnimals.h"
-
 #define FILENAME "dataNEW.txt"
-#define FLUSH stdin=freopen(NULL,"r",stdin)
 
 /*
  * To-Do List:
- * 1) SEARCH for a record 
- *      - Partial searching?
- *      - Range searching?
+ * 1) Range Searching
+ * 2) Put more data entries in the file
  * 
  */
 
@@ -25,26 +22,30 @@ int main() {
     animal_t* list = createList(fpStart);
     fclose(fpStart);
 
-    puts("========== Welcome to the Zoo Gallery ==========\n");
     int choice;
-
+    char temp[MAX_LEN] = {0};
+    
     do {
+        clearScreen();
+        puts("=============== Welcome to the Zoo Gallery ===============\n");
         puts("\n----------------------- MAIN MENU ----------------------");
         puts(" 1) SHOW ALL RECORDS / VIEW DETAILS");
         puts(" 2) ADD RECORD");
         puts(" 3) EDIT RECORD");
         puts(" 4) DELETE RECORD");
-        puts(" 6) SEARCH RECORD");
+        puts(" 5) SEARCH RECORD");
         puts("-1) EXIT + SAVE");
         puts("----------------------------------------------------------");
-        puts("Please select from one of the following options:");
+        printf("Please select from one of the following options: ");
         FLUSH;
-        scanf("%d", &choice);
-
+        fgets(temp, MAX_LEN, stdin);
+        choice = strtol(temp, NULL, 10);
+        
+        clearScreen();
+        
         // Switch statements do not test for negative numbers
         if (choice == -1) {
             printf("\nThanks for using our app! Data has been saved to file!\n");
-            break;
         }
         
         switch (choice) {
@@ -62,11 +63,8 @@ int main() {
                 deleteRecord(&list);
                 break;
             case 5:
+                searchOptions(list);
                 break;
-            default:
-                printf("Invalid choice! Please try again!");
-                break;
-
         }
 
     } while (choice != -1);
