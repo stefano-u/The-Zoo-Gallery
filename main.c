@@ -7,12 +7,11 @@
  * To-Do List:
  * 1) Range Searching
  * 2) Put more data entries in the file
- * 3) Enumerating through the locations
- * 4) Fix the search (how did that break)
+ * 3) Enumerating through the locations (Abby)
  * 5) Automatically update animal ID
- * 6) Prevent user from editing the ID
- * 
  */
+
+// 1) we have to note down the exact number of nodes
 
 int main() {
     // Opens text file for reading (r+)
@@ -21,18 +20,24 @@ int main() {
         printf("Error reading file.\n");
         exit(1);
     }
-    
+
+    // Get total number of nodes (used for the Animal ID)
+    int totalNum = getTotalNodes(fpStart);
+
+    // Initialize queue (used for storing available animalId after deletion)
+    // Only used by add + delete functions
+    queue_t* queue = initQueue();
+
     // Create linked list from file
     animal_t* list = createList(fpStart);
     fclose(fpStart);
 
     int choice;
     char temp[MAX_LEN] = {0};
-    
+
     do {
-        clearScreen();
-        puts("=============== Welcome to the Zoo Gallery ===============\n");
-        puts("\n----------------------- MAIN MENU ----------------------");
+        puts("=============== Welcome to the Zoo Gallery ===============");
+        puts("----------------------- MAIN MENU ----------------------");
         puts(" 1) SHOW ALL RECORDS / VIEW DETAILS");
         puts(" 2) ADD RECORD");
         puts(" 3) EDIT RECORD");
@@ -44,27 +49,30 @@ int main() {
         FLUSH;
         fgets(temp, MAX_LEN, stdin);
         choice = strtol(temp, NULL, 10);
+
         
         clearScreen();
-        
         // Switch statements do not test for negative numbers
         if (choice == -1) {
             printf("\nThanks for using our app! Data has been saved to file!\n");
         }
-        
+
         switch (choice) {
             case 1:
                 displayListBrief(list);
-                searchById(list);
+                if (list != NULL) {
+                    searchById(list);
+                    clearScreen();
+                }
                 break;
-            case 2:
-                addRecord(&list);
+            case 2:                
+                addRecord(&list, queue, &totalNum);
                 break;
             case 3:
                 editRecord(&list);
                 break;
             case 4:
-                deleteRecord(&list);
+                deleteRecord(&list, queue);
                 break;
             case 5:
                 searchOptions(list);
@@ -79,10 +87,10 @@ int main() {
         printf("Error reading file.\n");
         exit(1);
     }
-    printToFile(fpEnd, list);
+    printToFile(fpEnd, list, totalNum);
     fclose(fpEnd);
-    
-    
+
+
     // Free linked list & contents of nodes
     deleteList(&list);
 

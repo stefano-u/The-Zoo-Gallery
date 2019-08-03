@@ -15,7 +15,17 @@ typedef struct animal {
     struct animal* prev;
 } animal_t;
 
+typedef struct queueNode {
+    int availableID;
+    struct queueNode* next;
+} queueNode_t;
+
+typedef struct queue {
+    queueNode_t *head, *tail;
+} queue_t;
+
 // Linked List operations
+int getTotalNodes(FILE*);
 animal_t* createList(FILE*);
 animal_t* createNodeFromFile(FILE*);
 void deleteList(animal_t**);
@@ -25,12 +35,20 @@ int binarySearch(animal_t*, int);
 animal_t* findMiddleNode(animal_t*, animal_t*);
 int getNumNodesFromList(animal_t*);
 
+
+// Queue operations
+queue_t* initQueue();
+bool isQueueEmpty(queue_t*);
+void enqueue(queue_t*, int);
+int dequeue(queue_t*);
+
+
 // "Database" operations
 void displayListBrief(animal_t*);
 void showRecord(animal_t*, int);
-void addRecord(animal_t**);
+void addRecord(animal_t**, queue_t*, int*);
 void editRecord(animal_t**);
-void deleteRecord(animal_t**);
+void deleteRecord(animal_t**, queue_t*);
 void searchById(animal_t*);
 void searchOptions(animal_t*);
 void searchByName(animal_t*);
@@ -38,7 +56,7 @@ void searchByName(animal_t*);
 // Miscellaneous operations
 void clearScreen();
 void strToUppercase(char*);
-void printToFile(FILE*, animal_t*);
+void printToFile(FILE*, animal_t*, int);
 int getAnimalId(animal_t*);
 void setAnimalName(char*);
 void setAnimalLocation(char*);

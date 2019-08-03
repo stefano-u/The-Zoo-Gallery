@@ -14,6 +14,17 @@
  * Author: Anna Isabelle Ramos
  * Description: Creates a linked list based on data on input file
  */
+int getTotalNodes(FILE* fp) {
+    char temp[MAX_LEN] = {0};
+    fgets(temp, sizeof (temp), fp);
+    char* token = strtok(temp, ",");
+    return strtol(token, NULL, 10);
+}
+
+/* ===================================================================================
+ * Author: Anna Isabelle Ramos
+ * Description: Creates a linked list based on data on input file
+ */
 animal_t* createList(FILE *fp) {
     animal_t *node = NULL, *current = NULL, *head = NULL;
 
@@ -161,8 +172,15 @@ void insertToList(animal_t** head, animal_t* node) {
  * Description: Deletes a node from the linked list
  */
 void deleteNode(animal_t** head, int recordId) {
-    if (recordId == 1) {
-        // if recordId = 1, then delete the head node
+    if ((*head) == NULL) {
+        puts("Linked list is empty!\n");
+        return;
+    } else if ((*head)->next == NULL) {
+        // if it's the only node
+        free(*head);
+        *head = NULL;
+    } else if ((*head)->prev == NULL) {
+        // if it's the head node, then delete it
         animal_t* toDelete = *head;
         *head = (*head)->next;
         (*head)->prev = NULL;
@@ -265,6 +283,70 @@ int getNumNodesFromList(animal_t* head) {
 
 
 
+// ================================ Queue Operations =================================
+
+/* ===================================================================================
+ * Author: Stefano Gregor Unlayao
+ * Description: Initialize the queue
+ */
+queue_t* initQueue() {
+    queue_t* queue = (queue_t*) malloc(sizeof (queueNode_t));
+    queue->head = NULL;
+    queue->tail = NULL;
+    return queue;
+}
+
+/* ===================================================================================
+ * Author: Stefano Gregor Unlayao
+ * Description: Check if queue is empty
+ */
+bool isQueueEmpty(queue_t* queue) {
+    return queue->head == NULL;
+}
+
+/* ===================================================================================
+ * Author: Stefano Gregor Unlayao
+ * Description: Adds a new element to the queue
+ */
+void enqueue(queue_t* queue, int animalId) {
+    queueNode_t* node = (queueNode_t*) malloc(sizeof (queueNode_t));
+    node->availableID = animalId;
+    node->next = NULL;
+    
+    if (isQueueEmpty(queue)) {
+        // Sets node as the first element in the queue
+        queue->head = node;
+        queue->tail = node;
+    } else {
+        // Puts node at the end if the queue is NOT empty
+        queue->tail->next = node;
+        queue->tail = node;
+    }
+}
+
+/* ===================================================================================
+ * Author: Stefano Gregor Unlayao
+ * Description: Remove first element in the queue
+ */
+int dequeue(queue_t* queue) {
+    if (isQueueEmpty(queue)) {
+        printf("Queue is empty!\n");
+        return -1;
+    }
+    int animalId = queue->head->availableID;
+    queueNode_t* toBeDequeued = queue->head;
+
+    queue->head = queue->head->next;
+
+    if (queue->head == NULL) {
+        queue->tail = NULL;
+    }
+
+    free(toBeDequeued);
+    return animalId;
+}
+
+
 
 
 // ============================= "Database" Operations ===============================
@@ -276,7 +358,7 @@ int getNumNodesFromList(animal_t* head) {
 void displayListBrief(animal_t* head) {
     puts("\n========== SHOW ALL RECORDS ==========");
     if (head == NULL) {
-        printf("Linked List is empty!\n");
+        puts("Linked List is empty!\n");
     } else {
         animal_t* current = head;
         while (current != NULL) {
@@ -293,7 +375,7 @@ void displayListBrief(animal_t* head) {
  */
 void showRecord(animal_t* head, int animalId) {
     if (head == NULL) {
-        printf("Linked List is empty!\n");
+        puts("Linked List is empty!\n");
     } else {
         animal_t* current = head;
         while (current != NULL) {
@@ -305,6 +387,7 @@ void showRecord(animal_t* head, int animalId) {
                 printf("Quantity:\t%d\n", current->quantity);
                 printf("Location:\t%s", current->location);
                 printf("\n---------------------------------------------\n\n");
+                break;
             }
             current = current->next;
         }
@@ -315,7 +398,7 @@ void showRecord(animal_t* head, int animalId) {
  * Author: Anna Isabelle Ramos
  * Description: Adds new node to linked list (with validation)
  */
-void addRecord(animal_t** head) {
+void addRecord(animal_t** head, queue_t* queue, int* totalCount) {
     puts("\n========== ADD NEW RECORD ==========");
     char temp[MAX_LEN] = {0};
 
@@ -329,7 +412,14 @@ void addRecord(animal_t** head) {
     newNode->prev = NULL;
 
     // Set animal's ID
-    newNode->animalID = getAnimalId(*head);
+    // if the queue is NOT empty = take the first element from there and that will be the new animal ID
+    // if the queue is empty, get the ++(*totalCount) as the new animal ID
+    if (!isQueueEmpty(queue)) {
+        newNode->animalID = dequeue(queue);
+    } else {
+        newNode->animalID = ++(*totalCount);
+    }
+
 
     // Set animal's name
     setAnimalName(temp);
@@ -414,6 +504,11 @@ void addRecord(animal_t** head) {
  */
 void editRecord(animal_t**head) {
     puts("\n========== EDIT RECORD ==========");
+    if (*head == NULL) {
+        puts("Linked List is empty!\n");
+        return;
+    }
+
     int recordId;
     char confirmChoice;
     int editChoice;
@@ -465,11 +560,11 @@ void editRecord(animal_t**head) {
 
             do {
                 printf("\n---------------------------------------------\n");
-                printf("1) Animal ID:\t%d\n", newNode->animalID);
-                printf("2) Name:\t%s\n", tempName);
-                printf("3) Sex:\t\t%c\n", newNode->sex);
-                printf("4) Quantity:\t%d\n", newNode->quantity);
-                printf("5) Location:\t%s", tempLocation);
+                printf("   Animal ID:\t%d\n", newNode->animalID);
+                printf("1) Name:\t%s\n", tempName);
+                printf("2) Sex:\t\t%c\n", newNode->sex);
+                printf("3) Quantity:\t%d\n", newNode->quantity);
+                printf("4) Location:\t%s", tempLocation);
                 printf("\n---------------------------------------------\n\n");
                 printf("\n\t>Please select a FIELD to edit (-1 to finish editing): ");
                 FLUSH;
@@ -482,25 +577,21 @@ void editRecord(animal_t**head) {
 
                 switch (editChoice) {
                     case 1:
-                        newNode->animalID = getAnimalId(*head);
-                        break;
-
-                    case 2:
                         setAnimalName(tempName);
                         onlyIdChanged = false;
                         break;
 
-                    case 3:
+                    case 2:
                         newNode->sex = getSex();
                         onlyIdChanged = false;
                         break;
 
-                    case 4:
+                    case 3:
                         newNode->quantity = getQuantity();
                         onlyIdChanged = false;
                         break;
 
-                    case 5:
+                    case 4:
                         setAnimalLocation(tempLocation);
                         onlyIdChanged = false;
                         break;
@@ -581,7 +672,7 @@ void editRecord(animal_t**head) {
  * Author: Anna Isabelle Ramos
  * Description: Deletes node in the linked list (with validation)
  */
-void deleteRecord(animal_t** head) {
+void deleteRecord(animal_t** head, queue_t* queue) {
     puts("\n========== DELETE RECORD ==========");
     int recordId;
     char choice;
@@ -589,6 +680,10 @@ void deleteRecord(animal_t** head) {
 
     // Contiually asks user to enter an AnimalID to delete
     do {
+        if (*head == NULL) {
+            puts("Linked List is empty!\n");
+            return;
+        }
         printf("Enter the Animal ID of record to DELETE (-1 to exit): ");
         FLUSH;
         fgets(temp, MAX_LEN, stdin);
@@ -605,6 +700,7 @@ void deleteRecord(animal_t** head) {
                 choice = toupper(choice);
 
                 if (choice == 'Y') {
+                    enqueue(queue, recordId);
                     deleteNode(head, recordId);
                     printf("The record has been deleted successfully!\n\n");
                 } else if (choice == 'N') {
@@ -650,6 +746,12 @@ void searchById(animal_t* head) {
  * Description: Gives the user the option to search by different methods
  */
 void searchOptions(animal_t* head) {
+    if (head == NULL) {
+        puts("\n========== SEARCH OPTIONS ==========");
+        puts("Linked List is empty!\n");
+        return;
+    }
+
     int choice;
     char temp[MAX_LEN] = {0};
     do {
@@ -691,7 +793,9 @@ void searchByName(animal_t* head) {
         REMOVEN(temp);
         strToUppercase(temp);
 
-        if (strlen(temp) > 0) {
+        if (strcmp(temp, "EXIT") == 0) {
+            break;
+        } else if (strlen(temp) > 0) {
             current = head;
             while (current != NULL) {
                 if (strstr(current->name, temp) != NULL) {
@@ -701,7 +805,7 @@ void searchByName(animal_t* head) {
                 current = current->next;
             }
             puts("");
-            
+
             if (count > 0) {
                 do {
                     printf("Enter the Animal ID to VIEW RECORD (-1 to exit): ");
@@ -746,11 +850,13 @@ void clearScreen() {
  * Author: Anna Isabelle Ramos
  * Description: Prints contents of linked list to file
  */
-void printToFile(FILE* fp, animal_t* head) {
+void printToFile(FILE* fp, animal_t* head, int totalCount) {
     if (head == NULL) {
-        printf("Linked List is empty! Cannot print to file.\n");
+        puts("Linked List is empty! File is now empty!\n");
+        fprintf(fp, "0\r\n");
     } else {
-        animal_t* current = head;
+        fprintf(fp, "%d\r\n", totalCount);
+        animal_t* current = head;        
         while (current != NULL) {
             fprintf(fp, "%d,%s,%c,%d,%s\r\n", current->animalID, current->name, current->sex, current->quantity, current->location);
             current = current->next;
