@@ -8,7 +8,6 @@
  * 1) Range Searching
  * 2) Put more data entries in the file
  * 3) Enumerating through the locations (Abby)
- * 5) Automatically update animal ID
  */
 
 // 1) we have to note down the exact number of nodes
