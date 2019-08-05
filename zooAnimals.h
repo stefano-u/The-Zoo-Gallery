@@ -24,6 +24,7 @@ typedef struct queue {
     queueNode_t *head, *tail;
 } queue_t;
 
+
 // Linked List operations
 int getTotalNodes(FILE*);
 animal_t* createList(FILE*);

@@ -7,12 +7,13 @@
  * To-Do List:
  * 1) Range Searching
  * 2) Put more data entries in the file
- * 3) Enumerating through the locations (Abby)
+ * 3) Fix edit record function (adds new record)
  */
 
 // 1) we have to note down the exact number of nodes
 
 int main() {
+        
     // Opens text file for reading (r+)
     FILE *fpStart = fopen(FILENAME, "r+");
     if (fpStart == NULL) {
@@ -48,7 +49,6 @@ int main() {
         FLUSH;
         fgets(temp, MAX_LEN, stdin);
         choice = strtol(temp, NULL, 10);
-
         
         clearScreen();
         // Switch statements do not test for negative numbers
@@ -88,7 +88,6 @@ int main() {
     }
     printToFile(fpEnd, list, totalNum);
     fclose(fpEnd);
-
 
     // Free linked list & contents of nodes
     deleteList(&list);

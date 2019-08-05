@@ -5,9 +5,6 @@
 #include <ctype.h>
 #include "zooAnimals.h"
 
-
-
-
 // ============================= Linked List Operations ==============================
 
 /* ===================================================================================
@@ -280,9 +277,6 @@ int getNumNodesFromList(animal_t* head) {
     return count;
 }
 
-
-
-
 // ================================ Queue Operations =================================
 
 /* ===================================================================================
@@ -345,9 +339,6 @@ int dequeue(queue_t* queue) {
     free(toBeDequeued);
     return animalId;
 }
-
-
-
 
 // ============================= "Database" Operations ===============================
 
@@ -420,7 +411,6 @@ void addRecord(animal_t** head, queue_t* queue, int* totalCount) {
         newNode->animalID = ++(*totalCount);
     }
 
-
     // Set animal's name
     setAnimalName(temp);
     newNode->name = (char*) calloc(strlen(temp) + 1, sizeof (char));
@@ -445,7 +435,6 @@ void addRecord(animal_t** head, queue_t* queue, int* totalCount) {
     }
     strcpy(newNode->location, temp);
 
-
     // Prints current information of new animal
     printf("Here are the information for the new animal:\n ");
     printf("\n---------------------------------------------\n");
@@ -455,7 +444,6 @@ void addRecord(animal_t** head, queue_t* queue, int* totalCount) {
     printf("Quantity:\t%d\n", newNode->quantity);
     printf("Location:\t%s", newNode->location);
     printf("\n---------------------------------------------\n\n");
-
 
     // Confirms with the user if they want to insert the new record
     char choice;
@@ -514,7 +502,7 @@ void editRecord(animal_t**head) {
     int editChoice;
     char temp[MAX_LEN] = {0};
 
-    // Contiually asks user to enter an AnimalID to delete
+    // Continually asks user to enter an AnimalID to delete
     do {
         printf("Enter the Animal ID of record to EDIT (-1 to exit): ");
         FLUSH;
@@ -533,8 +521,6 @@ void editRecord(animal_t**head) {
                 }
                 current = current->next;
             }
-
-
 
             animal_t* newNode = (animal_t*) malloc(sizeof (animal_t));
             if (newNode == NULL) {
@@ -556,7 +542,6 @@ void editRecord(animal_t**head) {
             REMOVEN(tempLocation);
 
             bool onlyIdChanged = true;
-
 
             do {
                 printf("\n---------------------------------------------\n");
@@ -599,11 +584,9 @@ void editRecord(animal_t**head) {
                     default:
                         printf("Invalid choice! Please try again!");
                         break;
-
                 }
 
             } while (editChoice != -1);
-
 
             // Confirms with the user if they want to delete the record
             do {
@@ -616,7 +599,6 @@ void editRecord(animal_t**head) {
                     // Check if there's a record with the exact same name, sex, and location
                     bool recordExists = false;
                     current = *head;
-
 
                     while (current != NULL && !onlyIdChanged) {
                         // ignore the existing node
@@ -652,8 +634,6 @@ void editRecord(animal_t**head) {
                         printf("The record has been edited successfully!\n\n");
                     }
 
-
-
                 } else if (confirmChoice == 'N') {
                     free(newNode);
                     printf("The record will NOT be edited!\n\n");
@@ -678,7 +658,7 @@ void deleteRecord(animal_t** head, queue_t* queue) {
     char choice;
     char temp[MAX_LEN] = {0};
 
-    // Contiually asks user to enter an AnimalID to delete
+    // Continually asks user to enter an AnimalID to delete
     do {
         if (*head == NULL) {
             puts("Linked List is empty!\n");
@@ -754,30 +734,27 @@ void searchOptions(animal_t* head) {
 
     int choice;
     char temp[MAX_LEN] = {0};
-    do {
-        clearScreen();
-        puts("\n========== SEARCH OPTIONS ==========");
-        puts(" 1) ID");
-        puts(" 2) NAME");
-        puts("-1) EXIT");
-        puts("----------------------------------------------------------");
-        printf("Please select a search method: ");
-        FLUSH;
-        fgets(temp, MAX_LEN, stdin);
-        choice = strtol(temp, NULL, 10);
+    clearScreen();
+    puts("\n========== SEARCH OPTIONS ==========");
+    puts(" 1) ID");
+    puts(" 2) NAME");
+    puts("-1) EXIT");
+    puts("----------------------------------------------------------");
+    printf("Please select a search method: ");
+    FLUSH;
+    fgets(temp, MAX_LEN, stdin);
+    choice = strtol(temp, NULL, 10);
 
-        clearScreen();
-
-        switch (choice) {
-            case 1:
-                searchById(head);
-                break;
-            case 2:
-                searchByName(head);
-                break;
-        }
-
-    } while (choice != -1);
+    clearScreen();
+    switch (choice) {
+        case 1:
+            searchById(head);
+            break;
+        case 2:
+            searchByName(head);
+            break;
+        default: break;
+    }
 }
 
 void searchByName(animal_t* head) {
@@ -825,14 +802,6 @@ void searchByName(animal_t* head) {
 
     } while (strcmp(temp, "EXIT") != 0);
 }
-
-
-
-
-
-
-
-
 
 // ============================= Miscellaneous Operations ===============================
 
@@ -922,19 +891,57 @@ void setAnimalName(char* name) {
  * Author: Stefano Gregor Unlayao
  * Description: Ask user for the animal's name
  */
-void setAnimalLocation(char* name) {
-    do {
-        printf("Enter the location of the animal: ");
-        FLUSH;
-        fgets(name, MAX_LEN, stdin);
-        REMOVEN(name);
-        if (strlen(name) <= 0) {
-            puts("Please enter a location with at least 1 character!\n");
-        }
-    } while (strlen(name) <= 0);
 
-    // Converts string to uppercase
-    strToUppercase(name);
+void setAnimalLocation(char* name) {
+    int choice;
+    char temp[MAX_LEN] = {0};
+    clearScreen();
+    puts("\n========== LOCATION OPTIONS ==========");
+    puts(" 1) AFRICAN SAVANNAH");
+    puts(" 2) ASIAN FALLS");
+    puts(" 3) CAVE ENCLOSURE");
+    puts(" 4) GRASSY PLAINS");
+    puts(" 5) HIGH PLAINS");
+    puts(" 6) ICEBERG LOUNGE");
+    puts(" 7) KOALA OUTBACK");
+    puts(" 8) PINEY WOODS");
+    puts(" 9) PRIMATE EXHIBIT");
+    puts(" 10) SWAMP EXHIBIT");
+    puts(" 11) WILD EXHIBIT");
+    puts("-1) ");
+    puts("----------------------------------------------------------");
+    printf("Enter the location of the animal: ");
+    FLUSH;
+    fgets(temp, MAX_LEN, stdin);
+    choice = strtol(temp, NULL, 10);
+
+    clearScreen();
+    switch (choice) {
+        case 1:
+            strcpy(name, "AFRICAN SAVANNAH"); break;
+        case 2:
+            strcpy(name, "ASIAN FALLS"); break;
+        case 3:
+            strcpy(name, "CAVE ENCLOSURE"); break;
+        case 4:
+            strcpy(name, "GRASSY PLAINS"); break;
+        case 5:
+            strcpy(name, "HIGH PLAINS"); break;
+        case 6:
+            strcpy(name, "ICEBERG LOUNGE"); break;
+        case 7:
+            strcpy(name, "KOALA OUTBACK"); break;
+        case 8:
+            strcpy(name, "PINEY WOODS"); break;
+        case 9:
+            strcpy(name, "PRIMATE EXHIBIT"); break;
+        case 10:
+            strcpy(name, "SWAMP EXHIBIT"); break;
+        case 11:
+            strcpy(name, "WILD EXHIBIT"); break;
+        default:
+            break;
+    }
 }
 
 /* ===================================================================================
