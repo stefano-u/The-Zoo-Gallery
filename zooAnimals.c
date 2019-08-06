@@ -10,7 +10,7 @@
  * Author: Anna Isabelle Ramos
  * Description: Creates a linked list based on data on input file
  */
-int getTotalNodes(FILE* fp) {
+int getLastId(FILE* fp) {
     char temp[MAX_LEN] = {0};
     fgets(temp, sizeof (temp), fp);
     char* token = strtok(temp, ",");
@@ -21,10 +21,10 @@ int getTotalNodes(FILE* fp) {
  * Author: Anna Isabelle Ramos
  * Description: Creates a linked list based on data on input file
  */
-animal_t* createList(FILE *fp) {
+animal_t* createList(FILE *fp, queue_t* queue) {
     animal_t *new_node = NULL, *head = NULL;
 
-    while ((new_node = createNodeFromFile(fp)) != NULL) {
+    while ((new_node = createNodeFromFile(fp, queue)) != NULL) {
         insertToList(&head, new_node);
     }
     return head;
@@ -34,7 +34,10 @@ animal_t* createList(FILE *fp) {
  * Author: Anna Isabelle Ramos
  * Description: Create linked list nodes based on input from file
  */
-animal_t* createNodeFromFile(FILE* fp) {
+animal_t* createNodeFromFile(FILE* fp, queue_t* queue) {
+    // Used for keeping track of available animalId (during initial file read)
+    static int availableId = 0;
+    
     char temp[MAX_LEN] = {0};
 
     // Checks to see if there is more data in the file
@@ -61,8 +64,15 @@ animal_t* createNodeFromFile(FILE* fp) {
 
             // Parse Animal ID            
             token = strtok(temp, ",");
-            node->animalID = strtol(token, NULL, 10);
-
+            int animalId = strtol(token, NULL, 10);
+            node->animalID = animalId;
+            
+            for (int i = availableId+1; i < animalId; i++) {
+                enqueue(queue, i);
+                printf("%d ", i);
+            }
+            availableId = animalId;
+            
             // Parse Name
             token = strtok(NULL, ",");
             node->name = (char*) calloc((strlen(token) + 1), sizeof (char));

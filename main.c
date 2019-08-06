@@ -12,8 +12,7 @@
 
 // 1) we have to note down the exact number of nodes
 
-int main() {
-        
+int main() {        
     // Opens text file for reading (r+)
     FILE *fpStart = fopen(FILENAME, "r+");
     if (fpStart == NULL) {
@@ -22,16 +21,16 @@ int main() {
     }
 
     // Get total number of nodes (used for the Animal ID)
-    int totalNum = getTotalNodes(fpStart);
+    int totalNum = getLastId(fpStart);
 
     // Initialize queue (used for storing available animalId after deletion)
     // Only used by add + delete functions
     queue_t* queue = initQueue();
 
     // Create linked list from file
-    animal_t* list = createList(fpStart);
+    animal_t* list = createList(fpStart, queue);
     fclose(fpStart);
-
+    
     int choice;
     char temp[MAX_LEN] = {0};
 
