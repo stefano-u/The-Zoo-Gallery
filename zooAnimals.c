@@ -6,6 +6,7 @@
 #include "zooAnimals.h"
 
 // ============================= Linked List Operations ==============================
+
 /* ===================================================================================
  * Author: Anna Isabelle Ramos
  * Description: Gets the last node's ID (stored on the first line of the file)
@@ -37,7 +38,7 @@ animal_t* createList(FILE *fp, queue_t* queue) {
 animal_t* createNodeFromFile(FILE* fp, queue_t* queue) {
     // Used for keeping track of available animalId (during initial file read)
     static int availableId = 0;
-    
+
     char temp[MAX_LEN] = {0};
 
     // Checks to see if there is more data in the file
@@ -66,13 +67,13 @@ animal_t* createNodeFromFile(FILE* fp, queue_t* queue) {
             token = strtok(temp, ",");
             int animalId = strtol(token, NULL, 10);
             node->animalID = animalId;
-            
+
             // Searched for available animal ID's on load
-            for (int i = availableId+1; i < animalId; i++) {
+            for (int i = availableId + 1; i < animalId; i++) {
                 enqueue(queue, i);
             }
             availableId = animalId;
-            
+
             // Parse Name
             token = strtok(NULL, ",");
             node->name = (char*) calloc((strlen(token) + 1), sizeof (char));
@@ -137,28 +138,28 @@ void insertToList(animal_t** head, animal_t* new_node) {
     if (*head == NULL) {
         new_node->prev = new_node; // Only element is also last element
         *head = new_node;
-    
-    // List is not empty, but new node goes at beginning
+
+        // List is not empty, but new node goes at beginning
     } else if (new_node->animalID <= (*head)->animalID) {
         new_node->prev = (*head)->prev; // Carry over last element
         (*head)->prev = new_node;
         new_node->next = *head;
         *head = new_node;
-    
-    // List is not empty, new node goes in middle or end
+
+        // List is not empty, new node goes in middle or end
     } else {
         animal_t* current = *head;
         while (current->next != NULL && (new_node->animalID > current->next->animalID)) {
             current = current->next;
         }
-        
+
         // Node goes at end of list
         if (current->next == NULL) {
             current->next = new_node;
             new_node->prev = current;
             (*head)->prev = new_node; // Update last element
-        
-        // Node goes in middle of list after current node
+
+            // Node goes in middle of list after current node
         } else {
             current->next->prev = new_node;
             new_node->next = current->next;
@@ -173,21 +174,28 @@ void insertToList(animal_t** head, animal_t* new_node) {
  * Description: Deletes a node from the linked list
  */
 void deleteNode(animal_t** head, animal_t* animal) {
-    
+
     // Animal doesn't exist
     if (animal == NULL) {
         puts("This animal does not exist!\n");
         return;
-        
+
     // Only one animal in the list
-    } else if (animal == *head) {
+    } else if (animal == *head && animal->next == NULL) {
         free(animal);
         *head = NULL;
-        
+
+    // Animal is at the head, but there are more nodes after
+    } else if (animal == *head && animal->next != NULL) {
+        animal_t* prevNode = animal->prev;
+        animal_t* nextNode = animal->next;
+        free(animal);
+        *head = nextNode;
+        nextNode->prev = prevNode;
     // More than one animal in the list
     } else {
         animal_t* temp = animal->prev;
-        
+
         // Update next and previous values for adjacent nodes
         if (animal->next == NULL) { // Last element
             temp->next = NULL;
@@ -196,7 +204,7 @@ void deleteNode(animal_t** head, animal_t* animal) {
             temp->next = animal->next;
             animal->next->prev = temp;
         }
-        free(animal);   
+        free(animal);
     }
 }
 
@@ -205,9 +213,9 @@ void deleteNode(animal_t** head, animal_t* animal) {
  * Description: Binary search for a specific ID (returns -1 if NOT found)
  * Reference: https://www.quora.com/What-is-a-C-program-binary-search-using-link-list
  */
-animal_t* binarySearch(animal_t** head, int key) {
-    animal_t* start = *head;
-    animal_t* end = (*head)->prev;
+animal_t* binarySearch(animal_t* head, int key) {
+    animal_t* start = head;
+    animal_t* end = head->prev;
     animal_t* middle;
 
     if (key > 0) {
@@ -217,7 +225,7 @@ animal_t* binarySearch(animal_t** head, int key) {
                 return middle;
             } else if (start == end && key != middle->animalID) {
                 return NULL;
-            }else if (key < middle->animalID) {
+            } else if (key < middle->animalID) {
                 end = middle;
             } else {
                 start = middle->next;
@@ -232,12 +240,12 @@ animal_t* binarySearch(animal_t** head, int key) {
  * Description: Search for the middle element between the HEAD and TAIL
  * Reference: https://cs.stackexchange.com/questions/90777/how-to-find-middle-element-of-doubly-linked-list-using-head-and-tail
  */
-animal_t* findMiddleNode(animal_t* head, animal_t* tail) {  
+animal_t* findMiddleNode(animal_t* head, animal_t* tail) {
     // Loop until pointers meet in the middle
     while (head->animalID < tail->animalID) {
         // Move the tail pointer backward
         tail = tail->prev;
-        
+
         // Move the head pointer forward
         if (head != tail) {
             head = head->next;
@@ -260,6 +268,7 @@ int getNumNodesFromList(animal_t* head) {
 }
 
 // ================================ Queue Operations =================================
+
 /* ===================================================================================
  * Author: Stefano Gregor Unlayao
  * Description: Initialize the queue
@@ -287,7 +296,7 @@ void enqueue(queue_t* queue, int animalId) {
     queueNode_t* node = (queueNode_t*) malloc(sizeof (queueNode_t));
     node->availableID = animalId;
     node->next = NULL;
-    
+
     if (isQueueEmpty(queue)) {
         // Sets node as the first element in the queue
         queue->head = node;
@@ -322,6 +331,7 @@ int dequeue(queue_t* queue) {
 }
 
 // ============================= "Database" Operations ===============================
+
 /* ===================================================================================
  * Author: Anna Isabelle Ramos
  * Description: Display 3 fields to the screen
@@ -407,7 +417,7 @@ void addRecord(animal_t** head, queue_t* queue, int* totalCount) {
 
     printf("Details of new animal:\n ");
     showRecord(newNode);
-    
+
     // Confirms with the user if they want to insert the new record
     char choice;
     do {
@@ -472,9 +482,9 @@ void editRecord(animal_t**head) {
 
         fgets(temp, MAX_LEN, stdin);
         recordId = strtol(temp, NULL, 10);
-        
-        animal_t* toBeEdited = binarySearch(head, recordId);
-        
+
+        animal_t* toBeEdited = binarySearch(*head, recordId);
+
         // Checks if animal ID is valid & existing
         if (recordId > 0 && toBeEdited != NULL) {
 
@@ -494,12 +504,12 @@ void editRecord(animal_t**head) {
             strcpy(tempName, toBeEdited->name);
             REMOVEN(tempName);
             newNode->name = tempName;
-            
+
             char tempLocation[MAX_LEN] = {0};
             strcpy(tempLocation, toBeEdited->location);
             REMOVEN(tempLocation);
             newNode->location = tempLocation;
-            
+
             while (1) {
                 printf("\n---------------------------------------------\n");
                 printf("Animal ID:\t%d\n", newNode->animalID);
@@ -512,11 +522,11 @@ void editRecord(animal_t**head) {
                 FLUSH;
                 fgets(temp, MAX_LEN, stdin);
                 editChoice = strtol(temp, NULL, 10);
-                
+
                 if (editChoice == -1) {
                     break;
                 }
-                
+
                 switch (editChoice) {
                     case 1:
                         setAnimalName(tempName);
@@ -615,10 +625,10 @@ void deleteRecord(animal_t** head, queue_t* queue) {
         printf("Enter the Animal ID of record to DELETE (-1 to exit): ");
         FLUSH;
         fgets(temp, MAX_LEN, stdin);
-        
-        recordId = strtol(temp, NULL, 10);        
-        animal_t* tbdeleted = binarySearch(head, recordId);
-        
+
+        recordId = strtol(temp, NULL, 10);
+        animal_t* tbdeleted = binarySearch(*head, recordId);
+
         // Checks if animal ID is valid & existing
         if (recordId > 0 && tbdeleted != NULL) {
             // Confirms with the user if they want to delete the record
@@ -670,10 +680,10 @@ void searchOptions(animal_t* head) {
     clearScreen();
     switch (choice) {
         case 1:
-            searchById(&head);
+            searchById(head);
             break;
         case 2:
-            //searchByName(head);
+            searchByName(head);
             break;
         default: break;
     }
@@ -683,7 +693,7 @@ void searchOptions(animal_t* head) {
  * Author: Anna Isabelle Ramos
  * Description: Search an animal by its AnimalID
  */
-void searchById(animal_t** head) {
+void searchById(animal_t* head) {
     int recordId;
     char temp[MAX_LEN] = {0};
     do {
@@ -694,7 +704,7 @@ void searchById(animal_t** head) {
         recordId = strtol(temp, NULL, 10);
 
         animal_t* temp = binarySearch(head, recordId);
-        
+
         if (recordId > 0 && temp != NULL) {
             showRecord(temp);
         } else {
@@ -703,24 +713,31 @@ void searchById(animal_t** head) {
     } while (recordId != -1);
 }
 
-/*
+/* ===================================================================================
+ * Author: Stefano Gregor Unlayao
+ * Description: Search an animal by the name (partial searching)
+ */
 void searchByName(animal_t* head) {
     char temp[MAX_LEN] = {0};
     animal_t* current = NULL;
-    int recordId;
-    int count = 0;
+    int count;
     do {
+        
         puts("\n========== SEARCH BY NAME ==========");
         printf("Enter the NAME of animal to SEARCH (type 'EXIT' to exit): ");
         FLUSH;
         fgets(temp, MAX_LEN, stdin);
         REMOVEN(temp);
         strToUppercase(temp);
-
+        
+        // Reset counter to 0
+        count = 0; 
+        
         if (strcmp(temp, "EXIT") == 0) {
             break;
         } else if (strlen(temp) > 0) {
             current = head;
+            // Find all occurrences of input from the linked list
             while (current != NULL) {
                 if (strstr(current->name, temp) != NULL) {
                     printf("%d) %s (%c)\n", current->animalID, current->name, current->sex);
@@ -730,14 +747,9 @@ void searchByName(animal_t* head) {
             }
             puts("");
 
+            // Prompt user to show record of an item (if a record was found)
             if (count > 0) {
-                do {
-                    printf("Enter the Animal ID to VIEW RECORD (-1 to exit): ");
-                    FLUSH;
-                    fgets(temp, MAX_LEN, stdin);
-                    recordId = strtol(temp, NULL, 10);
-                    showRecord(head, recordId);
-                } while (recordId != -1);
+                searchById(head);
                 clearScreen();
             } else {
                 printf("No result for that name!\n");
@@ -749,8 +761,9 @@ void searchByName(animal_t* head) {
 
     } while (strcmp(temp, "EXIT") != 0);
 }
-*/
+  
 // ============================= Miscellaneous Operations ===============================
+
 /* ===================================================================================
  * Author: Anna Isabelle Ramos
  * Description: Clears the screen
@@ -771,7 +784,7 @@ void printToFile(FILE* fp, animal_t* head, int lastId) {
         fprintf(fp, "0\r\n");
     } else {
         fprintf(fp, "%d\r\n", lastId);
-        animal_t* current = head;        
+        animal_t* current = head;
         while (current != NULL) {
             fprintf(fp, "%d,%s,%c,%d,%s\r\n", current->animalID, current->name, current->sex, current->quantity, current->location);
             current = current->next;
@@ -815,53 +828,63 @@ void setAnimalName(char* name) {
 void setAnimalLocation(char* name) {
     int choice;
     char temp[MAX_LEN] = {0};
-    clearScreen();
-    puts("\n========== LOCATION OPTIONS ==========");
-    puts(" 1) AFRICAN SAVANNAH");
-    puts(" 2) ASIAN FALLS");
-    puts(" 3) CAVE ENCLOSURE");
-    puts(" 4) GRASSY PLAINS");
-    puts(" 5) HIGH PLAINS");
-    puts(" 6) ICEBERG LOUNGE");
-    puts(" 7) KOALA OUTBACK");
-    puts(" 8) PINEY WOODS");
-    puts(" 9) PRIMATE EXHIBIT");
-    puts(" 10) SWAMP EXHIBIT");
-    puts(" 11) WILD EXHIBIT");
-    puts("-1) ");
-    puts("----------------------------------------------------------");
-    printf("Enter the location of the animal: ");
-    FLUSH;
-    fgets(temp, MAX_LEN, stdin);
-    choice = strtol(temp, NULL, 10);
+    do {
+        clearScreen();
+        puts("\n========== LOCATION OPTIONS ==========");
+        puts(" 1) AFRICAN SAVANNAH");
+        puts(" 2) ASIAN FALLS");
+        puts(" 3) CAVE ENCLOSURE");
+        puts(" 4) GRASSY PLAINS");
+        puts(" 5) HIGH PLAINS");
+        puts(" 6) ICEBERG LOUNGE");
+        puts(" 7) KOALA OUTBACK");
+        puts(" 8) PINEY WOODS");
+        puts(" 9) PRIMATE EXHIBIT");
+        puts(" 10) SWAMP EXHIBIT");
+        puts(" 11) WILD EXHIBIT");
+        puts("----------------------------------------------------------");
+        printf("Enter the location of the animal: ");
+        FLUSH;
+        fgets(temp, MAX_LEN, stdin);
+        choice = strtol(temp, NULL, 10);
 
-    clearScreen();
-    switch (choice) {
-        case 1:
-            strcpy(name, "AFRICAN SAVANNAH"); break;
-        case 2:
-            strcpy(name, "ASIAN FALLS"); break;
-        case 3:
-            strcpy(name, "CAVE ENCLOSURE"); break;
-        case 4:
-            strcpy(name, "GRASSY PLAINS"); break;
-        case 5:
-            strcpy(name, "HIGH PLAINS"); break;
-        case 6:
-            strcpy(name, "ICEBERG LOUNGE"); break;
-        case 7:
-            strcpy(name, "KOALA OUTBACK"); break;
-        case 8:
-            strcpy(name, "PINEY WOODS"); break;
-        case 9:
-            strcpy(name, "PRIMATE EXHIBIT"); break;
-        case 10:
-            strcpy(name, "SWAMP EXHIBIT"); break;
-        case 11:
-            strcpy(name, "WILD EXHIBIT"); break;
-        default:
-            break;
-    }
+        clearScreen();
+        switch (choice) {
+            case 1:
+                strcpy(name, "AFRICAN SAVANNAH");
+                break;
+            case 2:
+                strcpy(name, "ASIAN FALLS");
+                break;
+            case 3:
+                strcpy(name, "CAVE ENCLOSURE");
+                break;
+            case 4:
+                strcpy(name, "GRASSY PLAINS");
+                break;
+            case 5:
+                strcpy(name, "HIGH PLAINS");
+                break;
+            case 6:
+                strcpy(name, "ICEBERG LOUNGE");
+                break;
+            case 7:
+                strcpy(name, "KOALA OUTBACK");
+                break;
+            case 8:
+                strcpy(name, "PINEY WOODS");
+                break;
+            case 9:
+                strcpy(name, "PRIMATE EXHIBIT");
+                break;
+            case 10:
+                strcpy(name, "SWAMP EXHIBIT");
+                break;
+            case 11:
+                strcpy(name, "WILD EXHIBIT");
+                break;
+        }
+    } while (choice > 11 || choice < 1);
 }
 
 /* ===================================================================================

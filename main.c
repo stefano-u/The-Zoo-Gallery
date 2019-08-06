@@ -26,10 +26,10 @@ int main() {
     // Initialize queue (used for storing available animalId after deletion)
     // Only used by add + delete functions
     queue_t* queue = initQueue();
-
+      
     // Create linked list from file
     animal_t* list = createList(fpStart, queue);
-    fclose(fpStart);
+    fclose(fpStart);    
     
     int choice;
     char temp[MAX_LEN] = {0};
@@ -59,7 +59,7 @@ int main() {
             case 1:
                 displayListBrief(list);
                 if (list != NULL) {
-                    searchById(&list);
+                    searchById(list);
                     clearScreen();
                 }
                 break;
@@ -85,7 +85,7 @@ int main() {
         printf("Error reading file.\n");
         exit(1);
     }
-    printToFile(fpEnd, list, lastId);
+    printToFile(fpEnd, list, list->prev->animalID);
     fclose(fpEnd);
 
     // Free linked list & contents of nodes
