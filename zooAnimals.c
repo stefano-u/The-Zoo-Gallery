@@ -8,7 +8,7 @@
 // ============================= Linked List Operations ==============================
 /* ===================================================================================
  * Author: Anna Isabelle Ramos
- * Description: Creates a linked list based on data on input file
+ * Description: Gets the last node's ID (stored on the first line of the file)
  */
 int getLastId(FILE* fp) {
     char temp[MAX_LEN] = {0};
@@ -67,9 +67,9 @@ animal_t* createNodeFromFile(FILE* fp, queue_t* queue) {
             int animalId = strtol(token, NULL, 10);
             node->animalID = animalId;
             
+            // Searched for available animal ID's on load
             for (int i = availableId+1; i < animalId; i++) {
                 enqueue(queue, i);
-                printf("%d ", i);
             }
             availableId = animalId;
             
@@ -765,12 +765,12 @@ void clearScreen() {
  * Author: Anna Isabelle Ramos
  * Description: Prints contents of linked list to file
  */
-void printToFile(FILE* fp, animal_t* head, int totalCount) {
+void printToFile(FILE* fp, animal_t* head, int lastId) {
     if (head == NULL) {
         puts("Linked List is empty! File is now empty!\n");
         fprintf(fp, "0\r\n");
     } else {
-        fprintf(fp, "%d\r\n", totalCount);
+        fprintf(fp, "%d\r\n", lastId);
         animal_t* current = head;        
         while (current != NULL) {
             fprintf(fp, "%d,%s,%c,%d,%s\r\n", current->animalID, current->name, current->sex, current->quantity, current->location);

@@ -21,7 +21,7 @@ int main() {
     }
 
     // Get total number of nodes (used for the Animal ID)
-    int totalNum = getLastId(fpStart);
+    int lastId = getLastId(fpStart);
 
     // Initialize queue (used for storing available animalId after deletion)
     // Only used by add + delete functions
@@ -64,7 +64,7 @@ int main() {
                 }
                 break;
             case 2:                
-                addRecord(&list, queue, &totalNum);
+                addRecord(&list, queue, &lastId);
                 break;
             case 3:
                 editRecord(&list);
@@ -85,7 +85,7 @@ int main() {
         printf("Error reading file.\n");
         exit(1);
     }
-    printToFile(fpEnd, list, totalNum);
+    printToFile(fpEnd, list, lastId);
     fclose(fpEnd);
 
     // Free linked list & contents of nodes
