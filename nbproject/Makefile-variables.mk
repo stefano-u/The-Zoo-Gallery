@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=Cygwin-Windows
 CND_ARTIFACT_DIR_Debug=dist/Debug/Cygwin-Windows
-CND_ARTIFACT_NAME_Debug=zoo-animals
-CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin-Windows/zoo-animals
+CND_ARTIFACT_NAME_Debug=zooanimals
+CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin-Windows/zooanimals
 CND_PACKAGE_DIR_Debug=dist/Debug/Cygwin-Windows/package
-CND_PACKAGE_NAME_Debug=zoo-animals.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/zoo-animals.tar
+CND_PACKAGE_NAME_Debug=zooanimals.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/zooanimals.tar
 # Release configuration
 CND_PLATFORM_Release=Cygwin-Windows
 CND_ARTIFACT_DIR_Release=dist/Release/Cygwin-Windows
-CND_ARTIFACT_NAME_Release=zoo-animals
-CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/zoo-animals
+CND_ARTIFACT_NAME_Release=zooanimals
+CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/zooanimals
 CND_PACKAGE_DIR_Release=dist/Release/Cygwin-Windows/package
-CND_PACKAGE_NAME_Release=zoo-animals.tar
-CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/zoo-animals.tar
+CND_PACKAGE_NAME_Release=zooanimals.tar
+CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/zooanimals.tar
 #
 # include compiler specific variables
 #

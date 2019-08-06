@@ -26,9 +26,9 @@ typedef struct queue {
 
 
 // Linked List operations
-int getTotalNodes(FILE*);
-animal_t* createList(FILE*);
-animal_t* createNodeFromFile(FILE*);
+int getLastId(FILE*);
+animal_t* createList(FILE*, queue_t*);
+animal_t* createNodeFromFile(FILE*, queue_t*);
 void deleteList(animal_t**);
 void insertToList(animal_t**, animal_t*);
 void deleteNode(animal_t**, animal_t*);
