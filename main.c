@@ -60,7 +60,7 @@ int main() {
             case 1:
                 displayListBrief(list);
                 if (list != NULL) {
-                    searchById(list);
+                    searchById(&list);
                     clearScreen();
                 }
                 break;
@@ -68,7 +68,7 @@ int main() {
                 addRecord(&list, queue, &totalNum);
                 break;
             case 3:
-                editRecord(&list);
+                //editRecord(&list);
                 break;
             case 4:
                 deleteRecord(&list, queue);

@@ -31,8 +31,8 @@ animal_t* createList(FILE*);
 animal_t* createNodeFromFile(FILE*);
 void deleteList(animal_t**);
 void insertToList(animal_t**, animal_t*);
-void deleteNode(animal_t**, int);
-int binarySearch(animal_t*, int);
+void deleteNode(animal_t**, animal_t*);
+animal_t* binarySearch(animal_t**, int);
 animal_t* findMiddleNode(animal_t*, animal_t*);
 int getNumNodesFromList(animal_t*);
 
@@ -46,11 +46,11 @@ int dequeue(queue_t*);
 
 // "Database" operations
 void displayListBrief(animal_t*);
-void showRecord(animal_t*, int);
+void showRecord(animal_t*);
 void addRecord(animal_t**, queue_t*, int*);
 void editRecord(animal_t**);
 void deleteRecord(animal_t**, queue_t*);
-void searchById(animal_t*);
+void searchById(animal_t**);
 void searchOptions(animal_t*);
 void searchByName(animal_t*);
 
