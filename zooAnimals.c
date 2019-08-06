@@ -452,7 +452,7 @@ void editRecord(animal_t**head) {
 
     int recordId;
     char confirmChoice;
-    int editChoice = 0;
+    int editChoice;
     char temp[MAX_LEN] = {0};
 
     // Continually asks user to enter an AnimalID to edit
@@ -490,13 +490,23 @@ void editRecord(animal_t**head) {
             REMOVEN(tempLocation);
             newNode->location = tempLocation;
             
-            while (editChoice != -1) {
-                showRecord(newNode);
+            while (1) {
+                printf("\n---------------------------------------------\n");
+                printf("Animal ID:\t%d\n", newNode->animalID);
+                printf("1. Name:\t%s\n", newNode->name);
+                printf("2. Sex:\t\t%c\n", newNode->sex);
+                printf("3. Quantity:\t%d\n", newNode->quantity);
+                printf("4. Location:\t%s", newNode->location);
+                printf("\n---------------------------------------------\n\n");
                 printf("\n\t>Please select a FIELD to edit (-1 to finish editing): ");
                 FLUSH;
                 fgets(temp, MAX_LEN, stdin);
                 editChoice = strtol(temp, NULL, 10);
-
+                
+                if (editChoice == -1) {
+                    break;
+                }
+                
                 switch (editChoice) {
                     case 1:
                         setAnimalName(tempName);
@@ -516,7 +526,7 @@ void editRecord(animal_t**head) {
                 }
             }
 
-            // Confirms with the user if they want to delete the record
+            // Confirms with the user if they want to edit the record
             do {
                 printf("CONFIRMATION: Would you like to EDIT this record (Y/N)? ");
                 FLUSH;
@@ -557,7 +567,7 @@ void editRecord(animal_t**head) {
                         }
                         strcpy(newNode->location, tempLocation);
 
-                        deleteNode(head, toBeEdited->animalID);
+                        deleteNode(head, toBeEdited);
                         insertToList(head, newNode);
                         printf("The record has been edited successfully!\n\n");
                     }
@@ -658,6 +668,7 @@ void searchOptions(animal_t* head) {
         default: break;
     }
 }
+
 /* ===================================================================================
  * Author: Anna Isabelle Ramos
  * Description: Search an animal by its AnimalID

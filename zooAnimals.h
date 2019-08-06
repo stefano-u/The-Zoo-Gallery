@@ -36,13 +36,11 @@ animal_t* binarySearch(animal_t**, int);
 animal_t* findMiddleNode(animal_t*, animal_t*);
 int getNumNodesFromList(animal_t*);
 
-
 // Queue operations
 queue_t* initQueue();
 bool isQueueEmpty(queue_t*);
 void enqueue(queue_t*, int);
 int dequeue(queue_t*);
-
 
 // "Database" operations
 void displayListBrief(animal_t*);

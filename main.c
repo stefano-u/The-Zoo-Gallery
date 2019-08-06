@@ -68,7 +68,7 @@ int main() {
                 addRecord(&list, queue, &totalNum);
                 break;
             case 3:
-                //editRecord(&list);
+                editRecord(&list);
                 break;
             case 4:
                 deleteRecord(&list, queue);
