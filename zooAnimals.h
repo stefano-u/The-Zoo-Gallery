@@ -56,7 +56,6 @@ void searchByName(animal_t*);
 void clearScreen();
 void strToUppercase(char*);
 void printToFile(FILE*, animal_t*, int);
-int getAnimalId(animal_t*);
 void setAnimalName(char*);
 void setAnimalLocation(char*);
 char getSex();

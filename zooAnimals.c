@@ -577,7 +577,7 @@ void editRecord(animal_t**head) {
                     printf("The record will NOT be edited!\n\n");
                 }
             } while (confirmChoice != 'Y' && confirmChoice != 'N');
-        } else if (recordId > 0 && binarySearch(*head, recordId) == -1) {
+        } else if (recordId > 0 && toBeEdited == NULL) {
             puts("Record does NOT exist!\n");
         } else if (recordId <= 1 && recordId != -1) {
             puts("Please enter an Animal ID greater than 0\n");
@@ -779,32 +779,6 @@ void strToUppercase(char* string) {
     }
 }
 
-/* ===================================================================================
- * Author: Stefano Gregor Unlayao
- * Description: Ask user for the animal's ID (with validation)
- */
-/*
-int getAnimalId(animal_t* head) {    
-    // Ask user for animal ID (must be greater than 0)
-    int animalId;
-    char temp[MAX_LEN] = {0};
-    do {
-        printf("Enter the Animal ID for the animal: ");
-        FLUSH;
-        fgets(temp, MAX_LEN, stdin);
-        animalId = strtol(temp, NULL, 10);
-
-        // Checks if the animal ID used in an existing record
-        if (animalId > 0 && binarySearch(head, animalId) != -1) {
-            puts("This animal ID is already taken. Please try again.\n");
-        } else if (animalId <= 0) {
-            puts("Please enter an Animal ID greater than 0.\n");
-        }
-    } while (animalId <= 0 || binarySearch(head, animalId) != -1);
-
-    return animalId;
-}
-*/
 /* ===================================================================================
  * Author: Stefano Gregor Unlayao
  * Description: Ask user for the animal's name
