@@ -488,35 +488,25 @@ void editRecord(animal_t**head) {
         // Checks if animal ID is valid & existing
         if (recordId > 0 && toBeEdited != NULL) {
 
-            // Create a new node to store animal information
-            animal_t* newNode = (animal_t*) malloc(sizeof (animal_t));
-            if (newNode == NULL) {
-                printf("Cannot allocate memory for this animal!\n");
-                exit(1);
-            }
-            newNode->next = NULL;
-            newNode->prev = NULL;
-            newNode->animalID = toBeEdited->animalID;
-            newNode->sex = toBeEdited->sex;
-            newNode->quantity = toBeEdited->quantity;
-
             char tempName[MAX_LEN] = {0};
             strcpy(tempName, toBeEdited->name);
             REMOVEN(tempName);
-            newNode->name = tempName;
-
+            
+            char tempSex = toBeEdited->sex;
+            
+            int tempQuantity = toBeEdited->quantity;
+            
             char tempLocation[MAX_LEN] = {0};
             strcpy(tempLocation, toBeEdited->location);
             REMOVEN(tempLocation);
-            newNode->location = tempLocation;
-
+            
             while (1) {
                 printf("\n---------------------------------------------\n");
-                printf("Animal ID:\t%d\n", newNode->animalID);
-                printf("1. Name:\t%s\n", newNode->name);
-                printf("2. Sex:\t\t%c\n", newNode->sex);
-                printf("3. Quantity:\t%d\n", newNode->quantity);
-                printf("4. Location:\t%s", newNode->location);
+                printf("Animal ID:\t%d\n", toBeEdited->animalID);
+                printf("1. Name:\t%s\n", tempName);
+                printf("2. Sex:\t\t%c\n", tempSex);
+                printf("3. Quantity:\t%d\n", tempQuantity);
+                printf("4. Location:\t%s", tempLocation);
                 printf("\n---------------------------------------------\n\n");
                 printf("\n\t>Please select a FIELD to edit (-1 to finish editing): ");
                 FLUSH;
@@ -532,10 +522,10 @@ void editRecord(animal_t**head) {
                         setAnimalName(tempName);
                         break;
                     case 2:
-                        newNode->sex = getSex();
+                        tempSex = getSex();
                         break;
                     case 3:
-                        newNode->quantity = getQuantity();
+                        tempQuantity = getQuantity();
                         break;
                     case 4:
                         setAnimalLocation(tempLocation);
@@ -561,39 +551,25 @@ void editRecord(animal_t**head) {
                     while (current != NULL) {
                         // ignore the existing node
                         if (current->animalID != toBeEdited->animalID &&
-                                current->sex == newNode->sex &&
+                                current->sex == tempSex &&
                                 strcmp(current->name, tempName) == 0 &&
                                 strcmp(current->location, tempLocation) == 0) {
                             printf("ERROR: A record with the exact same name, sex, and location already exists. \nRecord cannot be edited!\n\n");
-                            free(newNode);
                             recordExists = true;
                             break;
                         }
                         current = current->next;
                     }
 
-                    if (!recordExists) {
-                        newNode->name = (char*) calloc(strlen(tempName) + 1, sizeof (char));
-                        if (newNode->name == NULL) {
-                            printf("Cannot allocate memory for this animal's name!\n");
-                            exit(1);
-                        }
-                        strcpy(newNode->name, tempName);
-
-                        newNode->location = (char*) calloc(strlen(tempLocation) + 1, sizeof (char));
-                        if (newNode->location == NULL) {
-                            printf("Cannot allocate memory for this animal's location!\n");
-                            exit(1);
-                        }
-                        strcpy(newNode->location, tempLocation);
-
-                        deleteNode(head, toBeEdited);
-                        insertToList(head, newNode);
+                    if (!recordExists) {            
+                        strcpy(toBeEdited->name, tempName);
+                        toBeEdited->sex = tempSex;
+                        toBeEdited->quantity = tempQuantity;
+                        strcpy(toBeEdited->location, tempLocation);
                         printf("The record has been edited successfully!\n\n");
                     }
 
                 } else if (confirmChoice == 'N') {
-                    free(newNode);
                     printf("The record will NOT be edited!\n\n");
                 }
             } while (confirmChoice != 'Y' && confirmChoice != 'N');
