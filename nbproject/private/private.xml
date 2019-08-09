@@ -9,6 +9,12 @@
         <group name="NetBeans">
             <file>file:/C:/Courses/PROG20799/NetBeans/ZooAnimals/zooAnimals.c</file>
             <file>file:/C:/Courses/PROG20799/NetBeans/ZooAnimals/main.c</file>
+            <file>file:/C:/Courses/PROG20799/NetBeans/ZooAnimals/zooAnimals.h</file>
+        </group>
+        <group name="PROG20799">
+            <file>file:/C:/Users/Bee/Documents/NetBeansProjects/Assignment_ZooAnimals/Zoo-Animals/zooAnimals.c</file>
+            <file>file:/C:/Users/Bee/Documents/NetBeansProjects/Assignment_ZooAnimals/Zoo-Animals/zooAnimals.h</file>
+            <file>file:/C:/Users/Bee/Documents/NetBeansProjects/Assignment_ZooAnimals/Zoo-Animals/main.c</file>
         </group>
     </open-files>
 </project-private>

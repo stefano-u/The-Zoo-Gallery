@@ -130,7 +130,7 @@ void deleteList(animal_t** head) {
 }
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Inserts node into the Linked List by ascending order of the AnimalID
  */
 void insertToList(animal_t** head, animal_t* new_node) {
@@ -170,7 +170,7 @@ void insertToList(animal_t** head, animal_t* new_node) {
 }
 
 /* ===================================================================================
- * Author: Stefano Gregor Unlayao
+ * Author: Anna Isabelle Ramos
  * Description: Deletes a node from the linked list
  */
 void deleteNode(animal_t** head, animal_t* animal) {
