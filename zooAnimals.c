@@ -254,19 +254,6 @@ animal_t* findMiddleNode(animal_t* head, animal_t* tail) {
     return head;
 }
 
-/* ===================================================================================
- * Author: Anna Isabelle Ramos
- * Description: Returns the number of nodes in the list
- */
-int getNumNodesFromList(animal_t* head) {
-    int count = 0;
-    while (head != NULL) {
-        count++;
-        head = head->next;
-    }
-    return count;
-}
-
 // ================================ Queue Operations =================================
 
 /* ===================================================================================

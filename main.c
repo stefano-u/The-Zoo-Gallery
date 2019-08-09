@@ -3,15 +3,6 @@
 #include "zooAnimals.h"
 #define FILENAME "dataNEW.txt"
 
-/*
- * To-Do List:
- * 1) Range Searching
- * 2) Put more data entries in the file
- * 3) Fix edit record function (adds new record)
- */
-
-// 1) we have to note down the exact number of nodes
-
 int main() {        
     // Opens text file for reading (r+)
     FILE *fpStart = fopen(FILENAME, "r+");

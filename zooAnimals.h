@@ -34,7 +34,6 @@ void insertToList(animal_t**, animal_t*);
 void deleteNode(animal_t**, animal_t*);
 animal_t* binarySearch(animal_t*, int);
 animal_t* findMiddleNode(animal_t*, animal_t*);
-int getNumNodesFromList(animal_t*);
 
 // Queue operations
 queue_t* initQueue();
